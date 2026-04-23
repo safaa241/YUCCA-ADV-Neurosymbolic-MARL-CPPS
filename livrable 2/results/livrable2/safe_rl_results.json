@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-04-23T03:18:13.075566",
+  "num_episodes": 50,
+  "results": {
+    "baseline": {
+      "mean_reward": -37088,
+      "mean_safety": 0.0085,
+      "total_violations": 74360,
+      "total_production": 0
+    },
+    "lagrangian": {
+      "mean_reward": -75423.78599999973,
+      "std_reward": 727.503745972473,
+      "mean_safety": 0.011240000000000007,
+      "std_safety": 0.007368413065994,
+      "total_violations": 74157,
+      "total_production": 8,
+      "mean_cost": 0.0,
+      "shield_stats": {}
+    },
+    "cbf": {
+      "mean_reward": -77710.9,
+      "std_reward": 160.00590614099218,
+      "mean_safety": 0.0031333333333333326,
+      "std_safety": 0.0021674357609345204,
+      "total_violations": 74765,
+      "total_production": 0,
+      "mean_cost": 0.0,
+      "shield_stats": {
+        "blocked_actions": 0,
+        "corrected_actions": 14412,
+        "safety_violations_prevented": 14412,
+        "total_interventions": 14412
+      }
+    },
+    "adaptive": {
+      "mean_reward": -75575.52799999973,
+      "std_reward": 727.5628368849966,
+      "mean_safety": 0.008346666666666669,
+      "std_safety": 0.005318713294689903,
+      "total_violations": 74374,
+      "total_production": 13,
+      "mean_cost": 0.0,
+      "shield_stats": {}
+    }
+  }
+}

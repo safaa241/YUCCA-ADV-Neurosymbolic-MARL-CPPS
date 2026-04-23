@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-04-23T03:13:54.988184",
+  "total_explanations": 10542,
+  "explanations": [
+    {
+      "timestamp": "2026-04-23T03:10:20.586409",
+      "agent_id": 0,
+      "state": {
+        "temperature": 

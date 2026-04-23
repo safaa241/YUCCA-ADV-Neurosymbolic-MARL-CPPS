@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-04-23T03:19:21.396600",
+  "num_episodes": 50,
+  "baseline": {
+    "mean_safety": 0.0085,
+    "mean_reward": -37088,
+    "total_violations": 74360,
+    "total_production": 0
+  },
+  "methods": {
+    "lagrangian": {
+      "mean_safety": 0.01040000000000001,
+      "std_safety": 0.006722433421842951,
+      "mean_reward": -75215.54399999972,
+      "std_reward": 748.3091676999439,
+      "total_violations": 74220,
+      "total_production": 19,
+      "mean_cost": 0.0,
+      "training_time": 217.8340301513672,
+      "shield_stats": {}
+    },
+    "cbf": {
+      "mean_safety": 0.0033333333333333327,
+      "std_safety": 0.0025957229778575722,
+      "mean_reward": -77694.22,
+      "std_reward": 192.75811682001878,
+      "total_violations": 74750,
+      "total_production": 0,
+      "mean_cost": 0.0,
+      "training_time": 337.86578249931335,
+      "shield_stats": {
+        "blocked_actions": 0,
+        "corrected_actions": 13630,
+        "safety_violations_prevented": 13630,
+        "total_interventions": 13630
+      }
+    },
+    "adaptive": {
+      "mean_safety": 0.00912000000000001,
+      "std_safety": 0.006982441470495032,
+      "mean_reward": -75461.17799999953,
+      "std_reward": 650.4681865519677,
+      "total_violations": 74316,
+      "total_production": 6,
+      "mean_cost": 0.0,
+      "training_time": 185.0714464187622,
+      "shield_stats": {}
+    }
+  },
+  "best_method": "lagrangian"
+}
