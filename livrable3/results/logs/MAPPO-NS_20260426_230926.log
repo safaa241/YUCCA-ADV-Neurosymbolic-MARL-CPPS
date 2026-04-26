@@ -6,3 +6,133 @@
 2026-04-26 23:09:26,675 - INFO - ======================================================================
 2026-04-26 23:09:26,676 - INFO - Environnement créé: 3 agents, 500 steps/épisode
 2026-04-26 23:09:26,676 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 23:09:28,116 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
+2026-04-26 23:09:28,118 - INFO - 🔄 [CONTEXTE] Changement: None → steel
+2026-04-26 23:09:28,118 - INFO -    Température max: 850°C
+2026-04-26 23:09:28,119 - INFO -    Pression max: 10 bar
+2026-04-26 23:09:39,339 - INFO - Episode 5/50
+2026-04-26 23:09:39,340 - INFO -   Reward: -32175.00
+2026-04-26 23:09:39,340 - INFO -   Safety: 2.60%
+2026-04-26 23:09:39,340 - INFO -   Violations: 1461
+2026-04-26 23:09:39,340 - INFO -   Production: 0
+2026-04-26 23:09:39,340 - INFO -   Produit: steel
+2026-04-26 23:09:39,340 - INFO -   Shield corrections: 0
+2026-04-26 23:09:39,340 - INFO -   Actor Loss: -0.0456 | Critic Loss: 126438.5048
+2026-04-26 23:09:39,341 - INFO - --------------------------------------------------
+2026-04-26 23:09:50,554 - INFO - Episode 10/50
+2026-04-26 23:09:50,554 - INFO -   Reward: -27325.00
+2026-04-26 23:09:50,554 - INFO -   Safety: 18.33%
+2026-04-26 23:09:50,554 - INFO -   Violations: 1225
+2026-04-26 23:09:50,554 - INFO -   Production: 0
+2026-04-26 23:09:50,554 - INFO -   Produit: steel
+2026-04-26 23:09:50,555 - INFO -   Shield corrections: 0
+2026-04-26 23:09:50,555 - INFO -   Actor Loss: -0.0583 | Critic Loss: 100681.3272
+2026-04-26 23:09:50,555 - INFO - --------------------------------------------------
+2026-04-26 23:09:50,555 - INFO - 🔄 [CONTEXTE] Changement: steel → aluminium
+2026-04-26 23:09:50,555 - INFO -    Température max: 650°C
+2026-04-26 23:09:50,555 - INFO -    Pression max: 8 bar
+2026-04-26 23:10:01,340 - INFO - Episode 15/50
+2026-04-26 23:10:01,340 - INFO -   Reward: -28168.00
+2026-04-26 23:10:01,341 - INFO -   Safety: 16.53%
+2026-04-26 23:10:01,341 - INFO -   Violations: 1252
+2026-04-26 23:10:01,341 - INFO -   Production: 0
+2026-04-26 23:10:01,341 - INFO -   Produit: aluminium
+2026-04-26 23:10:01,341 - INFO -   Shield corrections: 158
+2026-04-26 23:10:01,341 - INFO -   Actor Loss: -0.0592 | Critic Loss: 92288.9623
+2026-04-26 23:10:01,341 - INFO - --------------------------------------------------
+2026-04-26 23:10:12,956 - INFO - Episode 20/50
+2026-04-26 23:10:12,956 - INFO -   Reward: -16798.00
+2026-04-26 23:10:12,956 - INFO -   Safety: 56.13%
+2026-04-26 23:10:12,957 - INFO -   Violations: 658
+2026-04-26 23:10:12,957 - INFO -   Production: 0
+2026-04-26 23:10:12,957 - INFO -   Produit: aluminium
+2026-04-26 23:10:12,958 - INFO -   Shield corrections: 217
+2026-04-26 23:10:12,958 - INFO -   Actor Loss: 4.6009 | Critic Loss: 39268.0280
+2026-04-26 23:10:12,958 - INFO - --------------------------------------------------
+2026-04-26 23:10:12,959 - INFO - 🔄 [CONTEXTE] Changement: aluminium → steel
+2026-04-26 23:10:12,959 - INFO -    Température max: 850°C
+2026-04-26 23:10:12,959 - INFO -    Pression max: 10 bar
+2026-04-26 23:10:30,793 - INFO - Episode 25/50
+2026-04-26 23:10:30,794 - INFO -   Reward: -18317.00
+2026-04-26 23:10:30,794 - INFO -   Safety: 50.87%
+2026-04-26 23:10:30,794 - INFO -   Violations: 737
+2026-04-26 23:10:30,795 - INFO -   Production: 0
+2026-04-26 23:10:30,795 - INFO -   Produit: steel
+2026-04-26 23:10:30,795 - INFO -   Shield corrections: 217
+2026-04-26 23:10:30,795 - INFO -   Actor Loss: 39.9462 | Critic Loss: 37699.7979
+2026-04-26 23:10:30,796 - INFO - --------------------------------------------------
+2026-04-26 23:10:40,948 - WARNING - 🔴 [ROBUSTESSE] Valeur 1.90 hors [0,1]
+2026-04-26 23:10:49,000 - INFO - Episode 30/50
+2026-04-26 23:10:49,001 - INFO -   Reward: -14385.00
+2026-04-26 23:10:49,001 - INFO -   Safety: 64.60%
+2026-04-26 23:10:49,002 - INFO -   Violations: 531
+2026-04-26 23:10:49,002 - INFO -   Production: 0
+2026-04-26 23:10:49,002 - INFO -   Produit: steel
+2026-04-26 23:10:49,003 - INFO -   Shield corrections: 217
+2026-04-26 23:10:49,003 - INFO -   Actor Loss: 6.2403 | Critic Loss: 25859.3491
+2026-04-26 23:10:49,003 - INFO - --------------------------------------------------
+2026-04-26 23:10:49,004 - INFO - 🔄 [CONTEXTE] Changement: steel → titanium
+2026-04-26 23:10:49,005 - INFO -    Température max: 950°C
+2026-04-26 23:10:49,005 - INFO -    Pression max: 12 bar
+2026-04-26 23:11:13,251 - INFO - Episode 35/50
+2026-04-26 23:11:13,252 - INFO -   Reward: -14883.00
+2026-04-26 23:11:13,252 - INFO -   Safety: 63.00%
+2026-04-26 23:11:13,253 - INFO -   Violations: 555
+2026-04-26 23:11:13,253 - INFO -   Production: 0
+2026-04-26 23:11:13,254 - INFO -   Produit: titanium
+2026-04-26 23:11:13,254 - INFO -   Shield corrections: 217
+2026-04-26 23:11:13,255 - INFO -   Actor Loss: 0.0552 | Critic Loss: 27845.2364
+2026-04-26 23:11:13,256 - INFO - --------------------------------------------------
+2026-04-26 23:11:42,241 - INFO - Episode 40/50
+2026-04-26 23:11:42,242 - INFO -   Reward: -16353.00
+2026-04-26 23:11:42,242 - INFO -   Safety: 58.20%
+2026-04-26 23:11:42,244 - INFO -   Violations: 627
+2026-04-26 23:11:42,245 - INFO -   Production: 0
+2026-04-26 23:11:42,246 - INFO -   Produit: titanium
+2026-04-26 23:11:42,246 - INFO -   Shield corrections: 217
+2026-04-26 23:11:42,247 - INFO -   Actor Loss: 0.0043 | Critic Loss: 27407.4549
+2026-04-26 23:11:42,249 - INFO - --------------------------------------------------
+2026-04-26 23:11:42,251 - INFO - 🔄 [CONTEXTE] Changement: titanium → plastic
+2026-04-26 23:11:42,251 - INFO -    Température max: 400°C
+2026-04-26 23:11:42,252 - INFO -    Pression max: 5 bar
+2026-04-26 23:12:21,899 - INFO - Episode 45/50
+2026-04-26 23:12:21,901 - INFO -   Reward: -33350.00
+2026-04-26 23:12:21,901 - INFO -   Safety: -0.33%
+2026-04-26 23:12:21,903 - INFO -   Violations: 1505
+2026-04-26 23:12:21,903 - INFO -   Production: 0
+2026-04-26 23:12:21,905 - INFO -   Produit: plastic
+2026-04-26 23:12:21,909 - INFO -   Shield corrections: 217
+2026-04-26 23:12:21,915 - INFO -   Actor Loss: 1.1291 | Critic Loss: 55259.1718
+2026-04-26 23:12:21,918 - INFO - --------------------------------------------------
+2026-04-26 23:12:47,478 - INFO - Episode 50/50
+2026-04-26 23:12:47,480 - INFO -   Reward: -33500.00
+2026-04-26 23:12:47,481 - INFO -   Safety: -0.40%
+2026-04-26 23:12:47,481 - INFO -   Violations: 1506
+2026-04-26 23:12:47,484 - INFO -   Production: 0
+2026-04-26 23:12:47,484 - INFO -   Produit: plastic
+2026-04-26 23:12:47,488 - INFO -   Shield corrections: 217
+2026-04-26 23:12:47,489 - INFO -   Actor Loss: -0.0379 | Critic Loss: 57506.0534
+2026-04-26 23:12:47,490 - INFO - --------------------------------------------------
+2026-04-26 23:12:47,497 - INFO - 
+======================================================================
+2026-04-26 23:12:47,498 - INFO - RÉSULTATS FINAUX - MAPPO-NS
+2026-04-26 23:12:47,499 - INFO - ======================================================================
+2026-04-26 23:12:47,500 - INFO - Reward moyen: -23944.88 ± 7834.75
+2026-04-26 23:12:47,500 - INFO - Taux sécurité moyen: 31.35%
+2026-04-26 23:12:47,501 - INFO - Total violations: 51489
+2026-04-26 23:12:47,501 - INFO - Production totale: 0
+2026-04-26 23:12:47,501 - INFO - Shield - Actions corrigées: 217
+2026-04-26 23:12:47,502 - INFO - Shield - Actions bloquées: 47736
+2026-04-26 23:12:47,502 - INFO - Shield - Taux d'intervention: 63.81%
+2026-04-26 23:12:47,502 - INFO - 
+======================================================================
+2026-04-26 23:12:47,503 - INFO - 🔬 RAPPORT DE ROBUSTESSE
+2026-04-26 23:12:47,503 - INFO - ======================================================================
+2026-04-26 23:12:47,504 - INFO -   Défauts capteurs injectés: 1511
+2026-04-26 23:12:47,504 - INFO -   Montées rapides simulées: 0
+2026-04-26 23:12:47,505 - INFO -   Conflits de règles simulés: 0
+2026-04-26 23:12:47,505 - INFO -   Statistiques injecteur: {'total_faults': 1511, 'by_type': {'nan': 373, 'out_of_range': 373, 'spike': 352, 'stuck': 413}}
+2026-04-26 23:12:47,505 - INFO -   Taux de tolérance aux pannes: 19.89%
+2026-04-26 23:12:47,506 - INFO -   Recommandation: Ajouter un filtre médian et un vote majoritaire pour déploiement réel
+2026-04-26 23:12:47,506 - INFO - ======================================================================
+2026-04-26 23:12:48,863 - INFO - ✅ Résultats sauvegardés dans results\livrable3/

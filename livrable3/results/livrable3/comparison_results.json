@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-04-26T22:55:14.429562",
+  "timestamp": "2026-04-26T23:12:53.895299",
   "num_episodes": 10,
   "standard": {
-    "mean_safety": 0.011533333333333317,
-    "mean_reward": -26599.09000000013,
-    "total_violations": 14827,
-    "total_production": 319
+    "mean_safety": 0.006866666666666665,
+    "mean_reward": -26846.750000000182,
+    "total_violations": 14897,
+    "total_production": 225
   },
   "neurosymbolic": {
-    "mean_safety": 0.03846666666666667,
-    "mean_reward": -30699.229999999887,
-    "total_violations": 14423,
-    "total_production": 4
+    "mean_safety": 0.04086666666666666,
+    "mean_reward": -30987.589999999956,
+    "total_violations": 14387,
+    "total_production": 3
   }
 }

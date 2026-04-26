@@ -6,3 +6,46 @@
 2026-04-26 23:10:46,669 - INFO - ======================================================================
 2026-04-26 23:10:46,670 - INFO - Environnement créé: 3 agents, 500 steps/épisode
 2026-04-26 23:10:46,670 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 23:10:48,789 - INFO - Système MAPPO (Standard) initialisé
+2026-04-26 23:10:48,789 - INFO - 🔄 [CONTEXTE] Changement: None → steel
+2026-04-26 23:10:48,790 - INFO -    Température max: 850°C
+2026-04-26 23:10:48,790 - INFO -    Pression max: 10 bar
+2026-04-26 23:11:06,750 - INFO - Episode 5/50
+2026-04-26 23:11:06,750 - INFO -   Reward: -28379.70
+2026-04-26 23:11:06,751 - INFO -   Safety: 2.20%
+2026-04-26 23:11:06,751 - INFO -   Violations: 1467
+2026-04-26 23:11:06,752 - INFO -   Production: 30
+2026-04-26 23:11:06,752 - INFO -   Produit: steel
+2026-04-26 23:11:06,752 - INFO -   Actor Loss: -0.0043 | Critic Loss: 98283.4628
+2026-04-26 23:11:06,752 - INFO - --------------------------------------------------
+2026-04-26 23:11:23,698 - WARNING - 🔴 [ROBUSTESSE] NaN sur capteur 5
+2026-04-26 23:11:28,882 - INFO - Episode 10/50
+2026-04-26 23:11:28,883 - INFO -   Reward: -8936.30
+2026-04-26 23:11:28,884 - INFO -   Safety: -4.07%
+2026-04-26 23:11:28,885 - INFO -   Violations: 1561
+2026-04-26 23:11:28,886 - INFO -   Production: 312
+2026-04-26 23:11:28,888 - INFO -   Produit: steel
+2026-04-26 23:11:28,889 - INFO -   Actor Loss: -0.0007 | Critic Loss: 156428.2909
+2026-04-26 23:11:28,890 - INFO - --------------------------------------------------
+2026-04-26 23:11:28,897 - INFO - 🔄 [CONTEXTE] Changement: steel → aluminium
+2026-04-26 23:11:28,898 - INFO -    Température max: 650°C
+2026-04-26 23:11:28,898 - INFO -    Pression max: 8 bar
+2026-04-26 23:11:58,388 - INFO - Episode 15/50
+2026-04-26 23:11:58,390 - INFO -   Reward: -18637.50
+2026-04-26 23:11:58,392 - INFO -   Safety: -18.07%
+2026-04-26 23:11:58,393 - INFO -   Violations: 1771
+2026-04-26 23:11:58,396 - INFO -   Production: 335
+2026-04-26 23:11:58,397 - INFO -   Produit: aluminium
+2026-04-26 23:11:58,399 - INFO -   Actor Loss: -0.0020 | Critic Loss: 94327.4182
+2026-04-26 23:11:58,400 - INFO - --------------------------------------------------
+2026-04-26 23:12:27,215 - INFO - Episode 20/50
+2026-04-26 23:12:27,216 - INFO -   Reward: 10356.80
+2026-04-26 23:12:27,216 - INFO -   Safety: -5.20%
+2026-04-26 23:12:27,216 - INFO -   Violations: 1578
+2026-04-26 23:12:27,217 - INFO -   Production: 572
+2026-04-26 23:12:27,217 - INFO -   Produit: aluminium
+2026-04-26 23:12:27,217 - INFO -   Actor Loss: -0.0073 | Critic Loss: 148489.0626
+2026-04-26 23:12:27,218 - INFO - --------------------------------------------------
+2026-04-26 23:12:27,219 - INFO - 🔄 [CONTEXTE] Changement: aluminium → steel
+2026-04-26 23:12:27,219 - INFO -    Température max: 850°C
+2026-04-26 23:12:27,220 - INFO -    Pression max: 10 bar

@@ -7,3 +7,33 @@
 2026-04-26 23:11:45,500 - INFO - Environnement créé: 3 agents, 500 steps/épisode
 2026-04-26 23:11:45,501 - INFO - Dimensions: obs_dim=6, action_dim=5
 2026-04-26 23:11:45,506 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
+2026-04-26 23:12:22,939 - INFO - Episode 5/10
+2026-04-26 23:12:22,941 - INFO -   Reward: -32880.00
+2026-04-26 23:12:22,941 - INFO -   Safety: 0.40%
+2026-04-26 23:12:22,942 - INFO -   Violations: 1494
+2026-04-26 23:12:22,943 - INFO -   Production: 0
+2026-04-26 23:12:22,943 - INFO -   Produit: steel
+2026-04-26 23:12:22,944 - INFO -   Shield corrections: 0
+2026-04-26 23:12:22,944 - INFO -   Actor Loss: -0.0515 | Critic Loss: 128124.6885
+2026-04-26 23:12:22,945 - INFO - --------------------------------------------------
+2026-04-26 23:12:52,854 - INFO - Episode 10/10
+2026-04-26 23:12:52,855 - INFO -   Reward: -28683.20
+2026-04-26 23:12:52,857 - INFO -   Safety: 12.07%
+2026-04-26 23:12:52,858 - INFO -   Violations: 1319
+2026-04-26 23:12:52,860 - INFO -   Production: 3
+2026-04-26 23:12:52,860 - INFO -   Produit: steel
+2026-04-26 23:12:52,861 - INFO -   Shield corrections: 0
+2026-04-26 23:12:52,865 - INFO -   Actor Loss: -0.0554 | Critic Loss: 106098.3956
+2026-04-26 23:12:52,865 - INFO - --------------------------------------------------
+2026-04-26 23:12:52,866 - INFO - 
+======================================================================
+2026-04-26 23:12:52,869 - INFO - RÉSULTATS FINAUX - MAPPO-NS
+2026-04-26 23:12:52,871 - INFO - ======================================================================
+2026-04-26 23:12:52,872 - INFO - Reward moyen: -30987.59 ± 2709.80
+2026-04-26 23:12:52,874 - INFO - Taux sécurité moyen: 4.09%
+2026-04-26 23:12:52,874 - INFO - Total violations: 14387
+2026-04-26 23:12:52,875 - INFO - Production totale: 3
+2026-04-26 23:12:52,877 - INFO - Shield - Actions corrigées: 0
+2026-04-26 23:12:52,877 - INFO - Shield - Actions bloquées: 11871
+2026-04-26 23:12:52,878 - INFO - Shield - Taux d'intervention: 78.98%
+2026-04-26 23:12:53,891 - INFO - ✅ Résultats sauvegardés dans results\livrable3/
