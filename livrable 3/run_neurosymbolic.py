@@ -1,10 +1,5 @@
-"""
-LIVRABLE 3 - Exécution complète du système MARL Neurosymbolique
-Script principal pour lancer l'entraînement et la comparaison
-
-Auteur: FEKNI Safaa
-Projet: YUCCA-ADV PFE 2026
-"""
+# Lance l’expérience complète (entraînement + comparaison) pour le Livrable 3, avec des métriques détaillées et un rapport complet
+# ce qu'il produit : un script qui exécute l'entraînement de MAPPO-NS, compare les résultats avec MAPPO standard, génère un rapport détaillé avec des graphiques et des explications, et sauvegarde tous les résultats dans un format structuré pour une analyse approfondie. Le script inclut également une option de "mode rapide" pour charger les résultats existants sans réentraînement.
 
 import sys
 import os

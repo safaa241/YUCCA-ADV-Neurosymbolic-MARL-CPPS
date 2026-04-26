@@ -1,7 +1,6 @@
 # Jumeau numérique (3 machines, physique simulée)
 # Ce qu'il produit: États, récompenses, violations de sûreté, etc.
 
-
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np

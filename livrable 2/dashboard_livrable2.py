@@ -1,10 +1,5 @@
-"""
-LIVRABLE 2 - Dashboard Safe RL pour CPPS
-Interface Streamlit pour visualiser les résultats des méthodes Safe RL
-
-Auteur: FEKNI Safaa
-Projet: YUCCA-ADV PFE 2026
-"""
+# Dashboard Streamlit pour Safe RL 
+# Ce qu'il produit: Un tableau de bord interactif pour visualiser les résultats des différentes méthodes Safe RL (CBF, Lagrangien, Pénalités Adaptatives) en comparaison avec MAPPO standard, avec des graphiques, des métriques clés et une analyse détaillée.
 
 import streamlit as st
 import plotly.graph_objects as go

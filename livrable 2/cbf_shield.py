@@ -1,11 +1,6 @@
-"""
-LIVRABLE 2 - Control Barrier Functions (CBF) pour CPPS
-
-Implémentation des fonctions barrière pour garantir la sécurité
-des actions des agents dans l'environnement CPPS.
-
-
-"""
+# Control Barrier Functions (fonctions barrière)
+# ce qu'il produit: CBFs pour évaluer la sécurité des actions proposées par les agents,
+# et un shield qui intercepte les actions dangereuses avant qu'elles ne soient exécutées. 
 
 import numpy as np
 from typing import Dict, List, Tuple, Optional

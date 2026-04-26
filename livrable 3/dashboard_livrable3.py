@@ -1,10 +1,5 @@
-"""
-LIVRABLE 3 - Dashboard MAPPO-NS (Neurosymbolique)
-Interface Streamlit pour visualiser les résultats et l'explicabilité
-
-Auteur: FEKNI Safaa
-Projet: YUCCA-ADV PFE 2026
-"""
+# Dashboard Streamlit pour visualiser explications et sécurité du système MARL Neurosymbolique (Livrable 3)
+# ce qu'il produit : une interface interactive pour explorer les résultats de l'expérience MAPPO-NS, avec des graphiques d'évolution, des métriques clés, des explications détaillées des interventions du shield, et une comparaison visuelle avec la baseline MAPPO standard. Le dashboard permet également de filtrer les explications par type d'intervention (modification, blocage, action sûre) et de visualiser les règles les plus fréquemment déclenchées.
 
 import streamlit as st
 import plotly.graph_objects as go

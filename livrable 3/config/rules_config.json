@@ -1,0 +1,37 @@
+{
+  "version": "2.0",
+  "description": "Configuration dynamique des seuils pour le shield neurosymbolique",
+  "thresholds": {
+    "temp_critical": 850,
+    "temp_high": 800,
+    "temp_warning_low": 750,
+    "temp_optimal": 700,
+    "press_critical": 10,
+    "press_high": 9.0,
+    "press_warning_low": 8.5,
+    "press_optimal": 8
+  },
+  "disabled_rules": [],
+  "material_profiles": {
+    "acier": {
+      "temp_critical": 850,
+      "temp_high": 800,
+      "temp_warning_low": 750
+    },
+    "aluminium": {
+      "temp_critical": 750,
+      "temp_high": 700,
+      "temp_warning_low": 650
+    },
+    "plastique": {
+      "temp_critical": 600,
+      "temp_high": 550,
+      "temp_warning_low": 500
+    }
+  },
+  "fault_tolerance": {
+    "fallback_action": 4,
+    "max_sensor_error_retries": 3,
+    "enable_voting": false
+  }
+}

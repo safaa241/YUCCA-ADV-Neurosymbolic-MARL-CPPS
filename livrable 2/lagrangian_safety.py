@@ -1,10 +1,5 @@
-"""
-LIVRABLE 2 - Multiplicateurs Lagrangiens pour Safe RL
-
-Implémentation de l'optimisation sous contraintes avec Lagrangien
-
-Auteur: FEKNI Safaa
-"""
+# Multiplicateurs de Lagrange + pénalités adaptatives
+# ce qu'il produit : Calcul de λ et pénalités adaptatives pour guider l'apprentissage vers des politiques sûres, en pénalisant les actions qui violent les contraintes de sécurité.
 
 import numpy as np
 from typing import Dict, List, Tuple

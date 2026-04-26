@@ -1,0 +1,83 @@
+2026-04-23 02:26:30,790 - INFO - Démarrage de l'entraînement MAPPO classique (PARTIE 1)
+2026-04-23 02:26:30,791 - INFO - Environnement créé avec 3 agents
+2026-04-23 02:26:32,123 - INFO - Agent 0 créé
+2026-04-23 02:26:32,124 - INFO - Agent 1 créé
+2026-04-23 02:26:32,125 - INFO - Agent 2 créé
+2026-04-23 02:26:32,126 - INFO - Entraînement sur 50 épisodes...
+2026-04-23 02:26:37,024 - INFO - Episode 5/50
+2026-04-23 02:26:37,025 - INFO -   Reward: -75686.80
+2026-04-23 02:26:37,025 - INFO -   Production: 5
+2026-04-23 02:26:37,025 - INFO -   Violations: 1486
+2026-04-23 02:26:37,025 - INFO -   Safety Rate: 0.93%
+2026-04-23 02:26:37,035 - INFO -   Actor Loss: -0.0015
+2026-04-23 02:26:37,035 - INFO -   Critic Loss: 690604.6931
+2026-04-23 02:26:41,764 - INFO - Episode 10/50
+2026-04-23 02:26:41,765 - INFO -   Reward: -75579.60
+2026-04-23 02:26:41,765 - INFO -   Production: 8
+2026-04-23 02:26:41,765 - INFO -   Violations: 1485
+2026-04-23 02:26:41,765 - INFO -   Safety Rate: 1.00%
+2026-04-23 02:26:41,765 - INFO -   Actor Loss: -0.0018
+2026-04-23 02:26:41,765 - INFO -   Critic Loss: 676542.8012
+2026-04-23 02:26:46,695 - INFO - Episode 15/50
+2026-04-23 02:26:46,695 - INFO -   Reward: -75970.30
+2026-04-23 02:26:46,695 - INFO -   Production: 9
+2026-04-23 02:26:46,695 - INFO -   Violations: 1492
+2026-04-23 02:26:46,696 - INFO -   Safety Rate: 0.53%
+2026-04-23 02:26:46,696 - INFO -   Actor Loss: -0.0017
+2026-04-23 02:26:46,696 - INFO -   Critic Loss: 653668.4796
+2026-04-23 02:26:52,019 - INFO - Episode 20/50
+2026-04-23 02:26:52,019 - INFO -   Reward: -75970.30
+2026-04-23 02:26:52,020 - INFO -   Production: 4
+2026-04-23 02:26:52,020 - INFO -   Violations: 1486
+2026-04-23 02:26:52,020 - INFO -   Safety Rate: 0.93%
+2026-04-23 02:26:52,020 - INFO -   Actor Loss: 0.0017
+2026-04-23 02:26:52,020 - INFO -   Critic Loss: 618190.9635
+2026-04-23 02:26:58,664 - INFO - Episode 25/50
+2026-04-23 02:26:58,665 - INFO -   Reward: -76298.70
+2026-04-23 02:26:58,665 - INFO -   Production: 3
+2026-04-23 02:26:58,665 - INFO -   Violations: 1494
+2026-04-23 02:26:58,665 - INFO -   Safety Rate: 0.40%
+2026-04-23 02:26:58,665 - INFO -   Actor Loss: -0.0016
+2026-04-23 02:26:58,665 - INFO -   Critic Loss: 561597.7509
+2026-04-23 02:27:06,015 - INFO - Episode 30/50
+2026-04-23 02:27:06,016 - INFO -   Reward: -74731.80
+2026-04-23 02:27:06,016 - INFO -   Production: 11
+2026-04-23 02:27:06,016 - INFO -   Violations: 1467
+2026-04-23 02:27:06,016 - INFO -   Safety Rate: 2.20%
+2026-04-23 02:27:06,016 - INFO -   Actor Loss: 0.0011
+2026-04-23 02:27:06,016 - INFO -   Critic Loss: 491567.5786
+2026-04-23 02:27:13,543 - INFO - Episode 35/50
+2026-04-23 02:27:13,543 - INFO -   Reward: -75436.60
+2026-04-23 02:27:13,544 - INFO -   Production: 10
+2026-04-23 02:27:13,544 - INFO -   Violations: 1486
+2026-04-23 02:27:13,544 - INFO -   Safety Rate: 0.93%
+2026-04-23 02:27:13,544 - INFO -   Actor Loss: -0.0014
+2026-04-23 02:27:13,544 - INFO -   Critic Loss: 411431.5881
+2026-04-23 02:27:20,524 - INFO - Episode 40/50
+2026-04-23 02:27:20,524 - INFO -   Reward: -76364.70
+2026-04-23 02:27:20,525 - INFO -   Production: 3
+2026-04-23 02:27:20,525 - INFO -   Violations: 1494
+2026-04-23 02:27:20,525 - INFO -   Safety Rate: 0.40%
+2026-04-23 02:27:20,525 - INFO -   Actor Loss: -0.0009
+2026-04-23 02:27:20,525 - INFO -   Critic Loss: 344333.1847
+2026-04-23 02:27:27,454 - INFO - Episode 45/50
+2026-04-23 02:27:27,454 - INFO -   Reward: -75776.70
+2026-04-23 02:27:27,454 - INFO -   Production: 4
+2026-04-23 02:27:27,454 - INFO -   Violations: 1482
+2026-04-23 02:27:27,454 - INFO -   Safety Rate: 1.20%
+2026-04-23 02:27:27,455 - INFO -   Actor Loss: 0.0004
+2026-04-23 02:27:27,455 - INFO -   Critic Loss: 309859.7055
+2026-04-23 02:27:34,464 - INFO - Episode 50/50
+2026-04-23 02:27:34,464 - INFO -   Reward: -75344.80
+2026-04-23 02:27:34,464 - INFO -   Production: 15
+2026-04-23 02:27:34,464 - INFO -   Violations: 1492
+2026-04-23 02:27:34,465 - INFO -   Safety Rate: 0.53%
+2026-04-23 02:27:34,465 - INFO -   Actor Loss: 0.0002
+2026-04-23 02:27:34,465 - INFO -   Critic Loss: 309595.7941
+2026-04-23 02:27:34,465 - INFO - 
+=== RÉSULTATS FINAUX ===
+2026-04-23 02:27:34,465 - INFO - Reward Moyen: -75745.90 ± 560.39
+2026-04-23 02:27:34,466 - INFO - Production Totale: 15
+2026-04-23 02:27:34,466 - INFO - Taux de Sécurité Moyen: 0.87%
+2026-04-23 02:27:34,466 - INFO - Total Violations: 74346
+2026-04-23 02:27:34,468 - INFO - Résultats sauvegardés dans results\part1\metrics.json

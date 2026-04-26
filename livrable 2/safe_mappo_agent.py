@@ -1,15 +1,6 @@
-"""
-LIVRABLE 2 - Safe Reinforcement Learning pour CPPS
-Agent MAPPO avec contraintes de sécurité (Safe RL)
+# Entraîne une méthode Safe RL spécifique (ex: MAPPO avec CBF et Lagrangien) sur l'environnement CPPS, en intégrant les fonctions de sécurité et les pénalités dans le processus d'apprentissage.
+# ce qu'il produit :  Un agent MAPPO entraîné avec des contraintes de sécurité, capable de prendre des décisions tout en respectant les limites de sûreté définies par les CBF et les pénalités Lagrangiennes.
 
-Méthodes implémentées:
-- Pénalités Lagrangiennes
-- Control Barrier Functions (CBF)
-- Pénalités dynamiques adaptatives
-
-Auteur: FEKNI Safaa
-Projet: YUCCA-ADV PFE 2026
-"""
 
 import numpy as np
 import torch
@@ -414,3 +405,111 @@ class SafeCPPSEnvironment:
     
     def get_episode_cost(self):
         return sum(self.episode_costs)
+
+# À AJOUTER à la fin du fichier safe_mappo_agent.py
+
+class SafeQMIXAgent(SafeMAPPOAgent):
+    """
+    Agent QMIX avec mécanismes Safe RL
+    Pour QMIX, le mixing network combine les valeurs individuelles
+    """
+    
+    def __init__(self, num_agents: int = 3, mixing_hidden_dim: int = 64, **kwargs):
+        super().__init__(**kwargs)
+        self.num_agents = num_agents
+        self.mixing_network = self._build_mixing_network(mixing_hidden_dim)
+        self.mixing_optimizer = optim.Adam(self.mixing_network.parameters(), lr=kwargs.get('learning_rate', 3e-4))
+        
+    def _build_mixing_network(self, hidden_dim: int) -> nn.Module:
+        """Réseau de mixing pour QMIX"""
+        return nn.Sequential(
+            nn.Linear(self.num_agents, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, 1)
+        )
+    
+    def compute_total_q(self, individual_qs: torch.Tensor, states: torch.Tensor) -> torch.Tensor:
+        """Calcule la Q-value totale via le mixing network"""
+        # individual_qs: [batch, num_agents]
+        # states: [batch, obs_dim * num_agents]
+        return self.mixing_network(individual_qs)
+    
+    def update_with_safety(self, returns, advantages, cost_returns, individual_qs, states):
+        """Mise à jour avec contraintes de sécurité pour QMIX"""
+        total_q = self.compute_total_q(individual_qs, states)
+        
+        # Perte QMIX standard
+        qmix_loss = nn.MSELoss()(total_q, returns)
+        
+        # Pénalité Lagrangienne pour la sécurité
+        if self.use_lagrangian:
+            cost_estimate = self.cost_critic(states).squeeze()
+            lagrangian_penalty = self.lagrangian_lambda * cost_estimate.mean()
+            total_loss = qmix_loss + lagrangian_penalty
+        else:
+            total_loss = qmix_loss
+        
+        self.mixing_optimizer.zero_grad()
+        total_loss.backward()
+        self.mixing_optimizer.step()
+        
+        return qmix_loss.item()
+
+
+class SafeMADDPGAgent(SafeMAPPOAgent):
+    """
+    Agent MADDPG avec mécanismes Safe RL
+    Pour MADDPG: acteur-critique avec observations centralisées
+    """
+    
+    def __init__(self, obs_dim: int, action_dim: int, num_agents: int = 3, **kwargs):
+        super().__init__(obs_dim, action_dim, **kwargs)
+        self.num_agents = num_agents
+        self.centralized_critic = self._build_centralized_critic(obs_dim * num_agents + action_dim * num_agents)
+        self.critic_optimizer = optim.Adam(self.centralized_critic.parameters(), lr=kwargs.get('learning_rate', 3e-4))
+        
+    def _build_centralized_critic(self, input_dim: int) -> nn.Module:
+        """Critique centralisé pour MADDPG (accès à tous les agents)"""
+        return nn.Sequential(
+            nn.Linear(input_dim, 256),
+            nn.ReLU(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, 1)
+        )
+    
+    def compute_centralized_value(self, all_obs: np.ndarray, all_actions: np.ndarray) -> torch.Tensor:
+        """Calcule la valeur centralisée pour MADDPG"""
+        # Concaténer toutes les observations et actions
+        combined = np.concatenate([all_obs.flatten(), all_actions.flatten()])
+        combined_tensor = torch.FloatTensor(combined).to(self.device)
+        return self.centralized_critic(combined_tensor)
+    
+    def update_with_safety(self, returns, advantages, cost_returns, all_obs, all_actions):
+        """Mise à jour MADDPG avec contraintes de sécurité"""
+        # Perte acteur avec contrainte de sécurité
+        predicted_q = self.compute_centralized_value(all_obs, all_actions)
+        
+        # Pénalité de sécurité
+        if self.use_cbf:
+            safety_penalty = self._compute_cbf_penalty(all_obs, all_actions)
+        else:
+            safety_penalty = 0
+            
+        actor_loss = -predicted_q.mean() + safety_penalty
+        
+        # Perte critique
+        target_q = returns
+        critic_loss = nn.MSELoss()(predicted_q, target_q)
+        
+        self.actor_optimizer.zero_grad()
+        actor_loss.backward()
+        self.actor_optimizer.step()
+        
+        self.critic_optimizer.zero_grad()
+        critic_loss.backward()
+        self.critic_optimizer.step()
+        
+        return actor_loss.item(), critic_loss.item()

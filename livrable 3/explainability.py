@@ -1,46 +1,59 @@
 """
-LIVRABLE 3 - Module d'Explicabilité pour MARL Neurosymbolique
-Génère des explications lisibles pour les décisions des agents
+LIVRABLE 3 - MODULE D'EXPLICABILITÉ AVANCÉ
+Génération d'explications pour anomalies, conflits et mode dégradé
 
 Auteur: FEKNI Safaa
-Projet: YUCCA-ADV PFE 2026
+Projet: YUCCA-ADV
 """
 
 import json
 from datetime import datetime
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any
 from pathlib import Path
 from dataclasses import dataclass, field, asdict
 from enum import Enum
 
 
-class ExplanationLevel(Enum):
-    """Niveau de détail des explications"""
-    BASIC = "basic"          # Explication simple
-    DETAILED = "detailed"    # Explication détaillée
-    FULL = "full"           # Explication complète avec état
-
-
 class ExplanationType(Enum):
-    """Type d'explication"""
+    """Types d'explications disponibles"""
     ACTION_MODIFIED = "action_modified"
     ACTION_BLOCKED = "action_blocked"
     ACTION_SAFE = "action_safe"
     RULE_TRIGGERED = "rule_triggered"
-    STATE_CHANGE = "state_change"
-    PERFORMANCE_ALERT = "performance_alert"
+    ANOMALY_DETECTED = "anomaly_detected"
+    RAPID_CHANGE = "rapid_change"
+    CONFLICT_RESOLVED = "conflict_resolved"
+    EMERGENCY_MODE = "emergency_mode"
+    CONTEXT_CHANGED = "context_changed"
+    SHIELD_STATS = "shield_stats"
+
+
+class ExplanationSeverity(Enum):
+    """Niveaux de sévérité des explications"""
+    CRITICAL = "critical"
+    WARNING = "warning"
+    INFO = "info"
+    SUCCESS = "success"
 
 
 @dataclass
 class Explanation:
-    """Structure d'une explication"""
+    """Structure complète d'une explication"""
+    
     timestamp: str
     agent_id: int
-    explanation_type: str
+    type: str
+    severity: str
     title: str
     description: str
+    icon: str = "📝"
+    
     details: Dict[str, Any] = field(default_factory=dict)
-    severity: str = "info"  # info, warning, critical, success
+    
+    original_action: Optional[int] = None
+    safe_action: Optional[int] = None
+    triggering_rule: Optional[str] = None
+    context: Optional[Dict] = None
     
     def to_dict(self) -> Dict:
         """Convertit l'explication en dictionnaire"""
@@ -52,28 +65,20 @@ class Explanation:
     
     def to_markdown(self) -> str:
         """Convertit l'explication en Markdown"""
-        emoji = {
-            "critical": "🔴",
-            "warning": "⚠️",
-            "info": "ℹ️",
-            "success": "✅"
-        }.get(self.severity, "📝")
-        
-        return f"""
-### {emoji} {self.title}
-
-**Agent:** {self.agent_id}
-**Type:** {self.explanation_type}
-**Timestamp:** {self.timestamp}
-
-{self.description}
-
-**Détails:**
-{json.dumps(self.details, indent=2, ensure_ascii=False)}
-        """
+        result = f"\n### {self.icon} {self.title}\n\n"
+        result += f"**Agent:** {self.agent_id}\n"
+        result += f"**Type:** {self.type}\n"
+        result += f"**Sévérité:** {self.severity}\n"
+        result += f"**Timestamp:** {self.timestamp}\n\n"
+        result += f"{self.description}\n\n"
+        result += "**Détails:**\n"
+        result += "```json\n"
+        result += json.dumps(self.details, indent=2, ensure_ascii=False)
+        result += "\n```\n"
+        return result
     
     def to_html(self) -> str:
-        """Convertit l'explication en HTML"""
+        """Convertit l'explication en HTML avec style"""
         colors = {
             "critical": "#e74c3c",
             "warning": "#f39c12",
@@ -82,14 +87,21 @@ class Explanation:
         }
         color = colors.get(self.severity, "#666")
         
+        details_str = json.dumps(self.details, indent=2, ensure_ascii=False)
+        
         return f"""
-<div style="border-left: 4px solid {color}; padding: 10px; margin: 10px 0; background-color: #f8f9fa;">
-    <strong>{self.title}</strong><br>
-    <small>Agent {self.agent_id} | {self.timestamp}</small><br>
-    <p>{self.description}</p>
-    <details>
-        <summary>Détails</summary>
-        <pre>{json.dumps(self.details, indent=2, ensure_ascii=False)}</pre>
+<div style="border-left: 4px solid {color}; padding: 12px; margin: 10px 0; background-color: #f8f9fa; border-radius: 8px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.5rem;">{self.icon}</span>
+        <strong>{self.title}</strong>
+        <span style="margin-left: auto; font-size: 0.8rem; color: #666;">{self.timestamp}</span>
+    </div>
+    <div style="margin-top: 8px; color: #444;">
+        {self.description}
+    </div>
+    <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; color: {color};">Details</summary>
+        <pre style="margin-top: 8px; background: #2d2d2d; color: #f8f8f2; padding: 8px; border-radius: 4px; overflow-x: auto;">{details_str}</pre>
     </details>
 </div>
         """
@@ -97,36 +109,32 @@ class Explanation:
 
 class ExplanationGenerator:
     """
-    Générateur d'explications pour les décisions du shield neurosymbolique
+    Générateur d'explications avancé pour le shield neurosymbolique
     """
     
     def __init__(self):
         self.explanation_history: List[Explanation] = []
         
-        # Mapping des actions
         self.action_names = {
-            0: "Réduire la vitesse",
+            0: "Reduire la vitesse",
             1: "Maintenir la vitesse",
             2: "Augmenter la vitesse",
-            3: "Mettre en attente (idle)",
-            4: "Arrêt d'urgence"
+            3: "Mettre en attente",
+            4: "Arret d'urgence"
         }
         
-        # Mapping des règles
         self.rule_names = {
-            "temperature_critical": "Température Critique",
-            "temperature_high": "Température Élevée",
-            "temperature_warning": "Température Haute",
+            "temperature_critical": "Temperature Critique",
+            "temperature_high": "Temperature Elevee",
+            "temperature_warning": "Temperature Haute",
             "pressure_critical": "Pression Critique",
-            "pressure_high": "Pression Élevée",
+            "pressure_high": "Pression Elevee",
             "pressure_warning": "Pression Haute",
             "maintenance_required": "Maintenance Requise",
             "optimal_conditions": "Conditions Optimales",
-            "speed_limit": "Limite de Vitesse",
-            "production_boost": "Boost de Production"
+            "speed_limit": "Limite de Vitesse"
         }
         
-        # Mapping des niveaux de sévérité
         self.rule_severity = {
             "temperature_critical": "critical",
             "pressure_critical": "critical",
@@ -135,270 +143,237 @@ class ExplanationGenerator:
             "pressure_high": "warning",
             "temperature_warning": "warning",
             "pressure_warning": "warning",
-            "speed_limit": "warning",
-            "optimal_conditions": "success",
-            "production_boost": "success"
+            "speed_limit": "warning"
         }
     
-    def generate_action_modification_explanation(
-        self,
-        agent_id: int,
-        original_action: int,
-        safe_action: int,
-        triggered_rule: str,
-        state: Dict[str, float],
-        reason: str
-    ) -> Explanation:
-        """
-        Génère une explication pour une action modifiée
-        """
+    def generate_anomaly_explanation(self, agent_id: int, sensor: str,
+                                     original_value: float, corrected_value: float,
+                                     detection_method: str = "median_filter") -> Explanation:
+        """Génère une explication pour une anomalie capteur"""
+        return Explanation(
+            timestamp=datetime.now().isoformat(),
+            agent_id=agent_id,
+            type=ExplanationType.ANOMALY_DETECTED.value,
+            severity=ExplanationSeverity.WARNING.value,
+            icon="🔄",
+            title=f"Anomalie capteur detectee: {sensor}",
+            description=f"La valeur du capteur {sensor} ({original_value:.1f}) a ete corrigee a {corrected_value:.1f}.",
+            details={
+                "sensor": sensor,
+                "original_value": original_value,
+                "corrected_value": corrected_value,
+                "detection_method": detection_method,
+                "correction_applied": True
+            }
+        )
+    
+    def generate_rapid_change_explanation(self, agent_id: int, 
+                                          change_rate: float,
+                                          current_temp: float,
+                                          previous_temp: float,
+                                          time_window: int = 5) -> Explanation:
+        """Génère une explication pour un changement trop rapide"""
+        return Explanation(
+            timestamp=datetime.now().isoformat(),
+            agent_id=agent_id,
+            type=ExplanationType.RAPID_CHANGE.value,
+            severity=ExplanationSeverity.CRITICAL.value,
+            icon="⚡",
+            title="Montee en temperature rapide detectee",
+            description=f"Temperature: {previous_temp:.0f}C -> {current_temp:.0f}C (taux: {change_rate:.1f}C/step)",
+            details={
+                "change_rate": change_rate,
+                "current_temperature": current_temp,
+                "previous_temperature": previous_temp,
+                "time_window": time_window,
+                "emergency_protocol": "Active - STOP immediat"
+            }
+        )
+    
+    def generate_conflict_explanation(self, agent_id: int,
+                                      conflicting_rules: List[str],
+                                      resolution_strategy: str,
+                                      final_action: int,
+                                      original_action: int,
+                                      resolution_reason: str = "") -> Explanation:
+        """Génère une explication pour un conflit entre regles"""
+        rule_names = [self.rule_names.get(r, r) for r in conflicting_rules]
+        
+        return Explanation(
+            timestamp=datetime.now().isoformat(),
+            agent_id=agent_id,
+            type=ExplanationType.CONFLICT_RESOLVED.value,
+            severity=ExplanationSeverity.WARNING.value,
+            icon="⚖️",
+            title="Conflit entre regles de securite",
+            description=f"{len(conflicting_rules)} regles en conflit: {', '.join(rule_names)}",
+            details={
+                "conflicting_rules": conflicting_rules,
+                "conflicting_rules_display": rule_names,
+                "resolution_strategy": resolution_strategy,
+                "resolution_reason": resolution_reason,
+                "original_action": original_action,
+                "original_action_name": self.action_names.get(original_action, "inconnue"),
+                "final_action": final_action,
+                "final_action_name": self.action_names.get(final_action, "inconnue")
+            }
+        )
+    
+    def generate_emergency_mode_explanation(self, agent_id: int,
+                                            reason: str,
+                                            temperature: float,
+                                            previous_mode: str) -> Explanation:
+        """Génère une explication pour l'activation du mode degrade"""
+        return Explanation(
+            timestamp=datetime.now().isoformat(),
+            agent_id=agent_id,
+            type=ExplanationType.EMERGENCY_MODE.value,
+            severity=ExplanationSeverity.CRITICAL.value,
+            icon="🚨",
+            title="MODE DEGRADE ACTIVE",
+            description=f"Mode degrade active: {reason}",
+            details={
+                "reason": reason,
+                "temperature": temperature,
+                "previous_mode": previous_mode,
+                "current_mode": "emergency",
+                "allowed_actions": ["Arret d'urgence uniquement"]
+            }
+        )
+    
+    def generate_context_change_explanation(self, agent_id: int,
+                                            old_context: str,
+                                            new_context: str,
+                                            material: str) -> Explanation:
+        """Génère une explication pour un changement de contexte"""
+        return Explanation(
+            timestamp=datetime.now().isoformat(),
+            agent_id=agent_id,
+            type=ExplanationType.CONTEXT_CHANGED.value,
+            severity=ExplanationSeverity.INFO.value,
+            icon="🏭",
+            title="Contexte de production modifie",
+            description=f"Contexte: {old_context} -> {new_context} (materiau: {material})",
+            details={
+                "old_context": old_context,
+                "new_context": new_context,
+                "material": material,
+                "thresholds_updated": True
+            }
+        )
+    
+    def generate_action_modification_explanation(self, agent_id: int,
+                                                  original_action: int,
+                                                  safe_action: int,
+                                                  rule_name: str,
+                                                  state: Dict,
+                                                  reason: str) -> Explanation:
+        """Génère une explication pour modification d'action"""
         original_name = self.action_names.get(original_action, "inconnue")
         safe_name = self.action_names.get(safe_action, "inconnue")
-        rule_name = self.rule_names.get(triggered_rule, triggered_rule)
-        severity = self.rule_severity.get(triggered_rule, "warning")
+        rule_display = self.rule_names.get(rule_name, rule_name)
         
-        # Description détaillée
-        if safe_action == 4:  # emergency_stop
-            description = f"L'action '{original_name}' a été remplacée par un ARRÊT D'URGENCE car {reason.lower()}"
-        elif original_action == 2 and safe_action == 0:  # increase -> reduce
-            description = f"L'augmentation de vitesse a été bloquée et remplacée par une réduction car {reason.lower()}"
-        elif original_action == 2 and safe_action == 1:  # increase -> maintain
-            description = f"L'augmentation de vitesse a été bloquée et remplacée par un maintien car {reason.lower()}"
+        if safe_action == 4:
+            severity = ExplanationSeverity.CRITICAL.value
+            icon = "🔴"
+            title = f"Action BLOQUEE: {original_name}"
+            description = f"Action remplacee par ARRET D'URGENCE. Regle: {rule_display}"
+        elif original_action == 2 and safe_action == 0:
+            severity = ExplanationSeverity.WARNING.value
+            icon = "⚠️"
+            title = f"Action corrigee: {original_name} -> {safe_name}"
+            description = f"Augmentation de vitesse bloquee. Regle: {rule_display}"
         else:
-            description = f"L'action '{original_name}' a été remplacée par '{safe_name}' car {reason.lower()}"
-        
-        # Détails
-        details = {
-            "original_action": original_action,
-            "original_action_name": original_name,
-            "safe_action": safe_action,
-            "safe_action_name": safe_name,
-            "triggered_rule": rule_name,
-            "rule_reason": reason,
-            "state": {
-                "temperature": f"{state.get('temperature', 0):.1f}°C",
-                "pressure": f"{state.get('pressure', 0):.1f} bar",
-                "speed": f"{state.get('speed', 0):.1f} m/s",
-                "production": state.get('production', 0),
-                "maintenance_needed": state.get('maintenance_needed', False),
-                "time_step": state.get('time_step', 0)
-            }
-        }
+            severity = ExplanationSeverity.INFO.value
+            icon = "🔄"
+            title = f"Action modifiee: {original_name} -> {safe_name}"
+            description = reason if reason else f"Modification par regle {rule_display}"
         
         return Explanation(
             timestamp=datetime.now().isoformat(),
             agent_id=agent_id,
-            explanation_type=ExplanationType.ACTION_MODIFIED.value,
-            title=f"Action modifiée: {original_name} → {safe_name}",
+            type=ExplanationType.ACTION_MODIFIED.value,
+            severity=severity,
+            icon=icon,
+            title=title,
             description=description,
-            details=details,
-            severity=severity
-        )
-    
-    def generate_action_blocked_explanation(
-        self,
-        agent_id: int,
-        original_action: int,
-        triggered_rule: str,
-        state: Dict[str, float],
-        reason: str
-    ) -> Explanation:
-        """
-        Génère une explication pour une action bloquée
-        """
-        original_name = self.action_names.get(original_action, "inconnue")
-        rule_name = self.rule_names.get(triggered_rule, triggered_rule)
-        
-        description = f"L'action '{original_name}' a été COMPLÈTEMENT BLOQUÉE et remplacée par un arrêt d'urgence car {reason.lower()}"
-        
-        details = {
-            "blocked_action": original_action,
-            "blocked_action_name": original_name,
-            "triggered_rule": rule_name,
-            "rule_reason": reason,
-            "state": {
-                "temperature": f"{state.get('temperature', 0):.1f}°C",
-                "pressure": f"{state.get('pressure', 0):.1f} bar",
-                "speed": f"{state.get('speed', 0):.1f} m/s"
+            original_action=original_action,
+            safe_action=safe_action,
+            triggering_rule=rule_name,
+            details={
+                "original_action_name": original_name,
+                "safe_action_name": safe_name,
+                "triggering_rule": rule_display,
+                "reason": reason,
+                "temperature": f"{state.get('temperature', 0):.1f}C",
+                "pressure": f"{state.get('pressure', 0):.1f} bar"
             }
-        }
-        
-        return Explanation(
-            timestamp=datetime.now().isoformat(),
-            agent_id=agent_id,
-            explanation_type=ExplanationType.ACTION_BLOCKED.value,
-            title=f"Action bloquée: {original_name}",
-            description=description,
-            details=details,
-            severity="critical"
         )
     
-    def generate_safe_action_explanation(
-        self,
-        agent_id: int,
-        action: int,
-        state: Dict[str, float]
-    ) -> Explanation:
-        """
-        Génère une explication pour une action sûre
-        """
+    def generate_safe_action_explanation(self, agent_id: int,
+                                         action: int,
+                                         state: Dict) -> Explanation:
+        """Génère une explication pour une action sûre"""
         action_name = self.action_names.get(action, "inconnue")
         
-        # Déterminer le niveau de sécurité
         temp = state.get('temperature', 0)
         pressure = state.get('pressure', 0)
         
         if temp < 700 and pressure < 8:
-            safety_status = "✅ Conditions optimales"
-            severity = "success"
-        elif temp < 750 and pressure < 8.5:
-            safety_status = "✅ Conditions normales"
-            severity = "success"
-        elif temp < 800 and pressure < 9.0:
-            safety_status = "⚠️ Conditions acceptables (surveillance recommandée)"
-            severity = "warning"
+            status = "Conditions optimales"
+            icon = "✅"
+        elif temp < 800 and pressure < 9:
+            status = "Conditions normales"
+            icon = "✅"
         else:
-            safety_status = "⚠️ Zone dangereuse (l'action est sûre mais la situation est critique)"
-            severity = "warning"
-        
-        description = f"L'action '{action_name}' a été exécutée. {safety_status}"
-        
-        details = {
-            "action": action,
-            "action_name": action_name,
-            "state": {
-                "temperature": f"{temp:.1f}°C",
-                "pressure": f"{pressure:.1f} bar",
-                "speed": f"{state.get('speed', 0):.1f} m/s"
-            }
-        }
+            status = "Zone de surveillance"
+            icon = "ℹ️"
         
         return Explanation(
             timestamp=datetime.now().isoformat(),
             agent_id=agent_id,
-            explanation_type=ExplanationType.ACTION_SAFE.value,
-            title=f"Action sûre: {action_name}",
-            description=description,
-            details=details,
-            severity=severity
+            type=ExplanationType.ACTION_SAFE.value,
+            severity=ExplanationSeverity.SUCCESS.value,
+            icon=icon,
+            title=f"Action sure: {action_name}",
+            description=f"Action '{action_name}' executee. {status}",
+            original_action=action,
+            safe_action=action,
+            details={
+                "action_name": action_name,
+                "temperature": f"{temp:.1f}C",
+                "pressure": f"{pressure:.1f} bar",
+                "safety_status": status
+            }
         )
     
-    def generate_rule_triggered_explanation(
-        self,
-        agent_id: int,
-        rule_name: str,
-        state: Dict[str, float],
-        condition_values: Dict[str, float]
-    ) -> Explanation:
-        """
-        Génère une explication pour une règle déclenchée
-        """
+    def generate_rule_triggered_explanation(self, agent_id: int,
+                                            rule_name: str,
+                                            state: Dict,
+                                            condition_values: Dict) -> Explanation:
+        """Génère une explication pour une regle declenchee"""
         rule_display = self.rule_names.get(rule_name, rule_name)
         severity = self.rule_severity.get(rule_name, "info")
         
-        description = f"La règle '{rule_display}' a été déclenchée."
+        severity_enum = ExplanationSeverity.WARNING if severity == "warning" else ExplanationSeverity.INFO
+        icon = "⚠️" if severity == "warning" else "ℹ️"
         
-        details = {
-            "rule": rule_name,
-            "rule_display": rule_display,
-            "condition_values": condition_values,
-            "state": {
-                "temperature": f"{state.get('temperature', 0):.1f}°C",
-                "pressure": f"{state.get('pressure', 0):.1f} bar",
-                "speed": f"{state.get('speed', 0):.1f} m/s"
+        return Explanation(
+            timestamp=datetime.now().isoformat(),
+            agent_id=agent_id,
+            type=ExplanationType.RULE_TRIGGERED.value,
+            severity=severity_enum.value,
+            icon=icon,
+            title=f"Regle declenchee: {rule_display}",
+            description=f"La regle '{rule_display}' a ete declenchee.",
+            triggering_rule=rule_name,
+            details={
+                "rule": rule_name,
+                "rule_display": rule_display,
+                "condition_values": condition_values,
+                "temperature": f"{state.get('temperature', 0):.1f}C",
+                "pressure": f"{state.get('pressure', 0):.1f} bar"
             }
-        }
-        
-        return Explanation(
-            timestamp=datetime.now().isoformat(),
-            agent_id=agent_id,
-            explanation_type=ExplanationType.RULE_TRIGGERED.value,
-            title=f"Règle déclenchée: {rule_display}",
-            description=description,
-            details=details,
-            severity=severity
-        )
-    
-    def generate_performance_alert(
-        self,
-        agent_id: int,
-        metric: str,
-        current_value: float,
-        threshold: float,
-        trend: str
-    ) -> Explanation:
-        """
-        Génère une alerte de performance
-        """
-        description = f"La métrique '{metric}' a atteint {current_value:.1f} (seuil: {threshold:.1f}). Tendance: {trend}"
-        
-        details = {
-            "metric": metric,
-            "current_value": current_value,
-            "threshold": threshold,
-            "trend": trend
-        }
-        
-        severity = "warning" if current_value > threshold else "info"
-        
-        return Explanation(
-            timestamp=datetime.now().isoformat(),
-            agent_id=agent_id,
-            explanation_type=ExplanationType.PERFORMANCE_ALERT.value,
-            title=f"Alerte performance: {metric}",
-            description=description,
-            details=details,
-            severity=severity
-        )
-    
-    def generate_state_change_explanation(
-        self,
-        agent_id: int,
-        previous_state: Dict[str, float],
-        new_state: Dict[str, float],
-        action_taken: int
-    ) -> Explanation:
-        """
-        Génère une explication pour un changement d'état
-        """
-        action_name = self.action_names.get(action_taken, "inconnue")
-        
-        # Calculer les deltas
-        temp_delta = new_state.get('temperature', 0) - previous_state.get('temperature', 0)
-        pressure_delta = new_state.get('pressure', 0) - previous_state.get('pressure', 0)
-        
-        temp_change = f"+{temp_delta:.1f}°C" if temp_delta >= 0 else f"{temp_delta:.1f}°C"
-        pressure_change = f"+{pressure_delta:.1f} bar" if pressure_delta >= 0 else f"{pressure_delta:.1f} bar"
-        
-        description = f"Suite à l'action '{action_name}', la température a varié de {temp_change} et la pression de {pressure_change}."
-        
-        details = {
-            "action_taken": action_taken,
-            "action_name": action_name,
-            "previous_state": {
-                "temperature": f"{previous_state.get('temperature', 0):.1f}°C",
-                "pressure": f"{previous_state.get('pressure', 0):.1f} bar",
-                "speed": f"{previous_state.get('speed', 0):.1f} m/s"
-            },
-            "new_state": {
-                "temperature": f"{new_state.get('temperature', 0):.1f}°C",
-                "pressure": f"{new_state.get('pressure', 0):.1f} bar",
-                "speed": f"{new_state.get('speed', 0):.1f} m/s"
-            },
-            "deltas": {
-                "temperature": temp_delta,
-                "pressure": pressure_delta
-            }
-        }
-        
-        return Explanation(
-            timestamp=datetime.now().isoformat(),
-            agent_id=agent_id,
-            explanation_type=ExplanationType.STATE_CHANGE.value,
-            title=f"Changement d'état après {action_name}",
-            description=description,
-            details=details,
-            severity="info"
         )
     
     def add_explanation(self, explanation: Explanation):
@@ -406,48 +381,36 @@ class ExplanationGenerator:
         self.explanation_history.append(explanation)
     
     def get_explanations(self, 
-                        agent_id: Optional[int] = None,
-                        explanation_type: Optional[str] = None,
-                        severity: Optional[str] = None,
+                        type_filter: Optional[str] = None,
+                        severity_filter: Optional[str] = None,
+                        agent_filter: Optional[int] = None,
                         limit: int = 100) -> List[Explanation]:
-        """
-        Récupère les explications avec filtres
-        """
-        explanations = self.explanation_history
+        """Filtre et retourne les explications"""
+        result = self.explanation_history
         
-        if agent_id is not None:
-            explanations = [e for e in explanations if e.agent_id == agent_id]
+        if type_filter:
+            result = [e for e in result if e.type == type_filter]
+        if severity_filter:
+            result = [e for e in result if e.severity == severity_filter]
+        if agent_filter is not None:
+            result = [e for e in result if e.agent_id == agent_filter]
         
-        if explanation_type is not None:
-            explanations = [e for e in explanations if e.explanation_type == explanation_type]
-        
-        if severity is not None:
-            explanations = [e for e in explanations if e.severity == severity]
-        
-        return explanations[-limit:]
+        return result[-limit:] if limit else result
     
     def get_explanations_summary(self) -> Dict:
-        """
-        Retourne un résumé des explications
-        """
+        """Retourne un résumé des explications"""
         total = len(self.explanation_history)
         
         if total == 0:
             return {"total": 0, "by_type": {}, "by_severity": {}, "by_agent": {}}
         
-        # Compter par type
         by_type = {}
-        for exp in self.explanation_history:
-            by_type[exp.explanation_type] = by_type.get(exp.explanation_type, 0) + 1
-        
-        # Compter par sévérité
         by_severity = {}
-        for exp in self.explanation_history:
-            by_severity[exp.severity] = by_severity.get(exp.severity, 0) + 1
-        
-        # Compter par agent
         by_agent = {}
+        
         for exp in self.explanation_history:
+            by_type[exp.type] = by_type.get(exp.type, 0) + 1
+            by_severity[exp.severity] = by_severity.get(exp.severity, 0) + 1
             by_agent[exp.agent_id] = by_agent.get(exp.agent_id, 0) + 1
         
         return {
@@ -458,9 +421,7 @@ class ExplanationGenerator:
         }
     
     def export_explanations(self, filepath: str, format: str = "json"):
-        """
-        Exporte les explications vers un fichier
-        """
+        """Exporte les explications vers un fichier"""
         output_path = Path(filepath)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         
@@ -468,6 +429,7 @@ class ExplanationGenerator:
             export_data = {
                 "timestamp": datetime.now().isoformat(),
                 "total": len(self.explanation_history),
+                "summary": self.get_explanations_summary(),
                 "explanations": [exp.to_dict() for exp in self.explanation_history]
             }
             with open(output_path, 'w', encoding='utf-8') as f:
@@ -476,10 +438,10 @@ class ExplanationGenerator:
         elif format == "markdown":
             with open(output_path, 'w', encoding='utf-8') as f:
                 f.write(f"# Explications du Shield Neurosymbolique\n\n")
-                f.write(f"Généré le: {datetime.now().isoformat()}\n")
+                f.write(f"Genere le: {datetime.now().isoformat()}\n")
                 f.write(f"Total: {len(self.explanation_history)} explications\n\n")
                 f.write("---\n\n")
-                for exp in self.explanation_history[-50:]:  # Dernières 50
+                for exp in self.explanation_history[-50:]:
                     f.write(exp.to_markdown())
                     f.write("\n---\n\n")
         
@@ -487,10 +449,11 @@ class ExplanationGenerator:
             with open(output_path, 'w', encoding='utf-8') as f:
                 f.write("<!DOCTYPE html>\n<html>\n<head>\n")
                 f.write("<title>Explications Shield Neurosymbolique</title>\n")
+                f.write("<meta charset='UTF-8'>\n")
                 f.write("<style>body { font-family: Arial, sans-serif; margin: 20px; }</style>\n")
                 f.write("</head>\n<body>\n")
                 f.write(f"<h1>Explications du Shield Neurosymbolique</h1>\n")
-                f.write(f"<p>Généré le: {datetime.now().isoformat()}</p>\n")
+                f.write(f"<p>Genere le: {datetime.now().isoformat()}</p>\n")
                 f.write(f"<p>Total: {len(self.explanation_history)} explications</p>\n")
                 f.write("<hr>\n")
                 for exp in self.explanation_history[-50:]:
@@ -498,73 +461,59 @@ class ExplanationGenerator:
                     f.write("<hr>\n")
                 f.write("</body>\n</html>")
         
-        print(f"✅ Explications exportées dans {filepath}")
+        print(f"Explications exportees dans {filepath}")
     
     def clear_history(self):
         """Efface l'historique des explications"""
         self.explanation_history = []
+    
+    def get_last_n_explanations(self, n: int = 10) -> List[Dict]:
+        """Retourne les n dernieres explications au format dictionnaire"""
+        return [exp.to_dict() for exp in self.explanation_history[-n:]]
 
 
 class ExplainableShield:
     """
-    Shield explicable qui combine le filtrage des actions avec la génération d'explications
+    Shield explicable qui combine le filtrage des actions avec la generation d'explications
     """
     
     def __init__(self, knowledge_base, explanation_generator: ExplanationGenerator = None):
         self.kb = knowledge_base
         self.explanation_gen = explanation_generator or ExplanationGenerator()
         
-        # Statistiques
         self.total_checks = 0
         self.modified_actions = 0
         self.blocked_actions = 0
-        
-    def filter_action_with_explanation(
-        self,
-        action: int,
-        observation: np.ndarray,
-        agent_id: int = 0
-    ) -> Tuple[int, bool, Optional[Explanation]]:
+    
+    def filter_action_with_explanation(self, action: int, observation: np.ndarray,
+                                        agent_id: int = 0):
         """
-        Filtre une action et génère une explication
+        Filtre une action et genere une explication
+        A implementer selon les besoins
         """
         self.total_checks += 1
         
-        # Convertir l'observation en état
         state_dict = self._observation_to_state(observation)
-        
-        # Obtenir l'action sûre
         safe_action, reason, triggered_rule = self.kb.get_safe_action(state_dict, action)
         
         modified = (safe_action != action)
         
-        explanation = None
-        
         if modified:
             self.modified_actions += 1
-            
-            if safe_action == 4:  # emergency_stop
+            if safe_action == 4:
                 self.blocked_actions += 1
-                explanation = self.explanation_gen.generate_action_blocked_explanation(
-                    agent_id, action, triggered_rule.name if triggered_rule else "unknown",
-                    state_dict, reason or "violation de sécurité critique"
-                )
-            else:
-                explanation = self.explanation_gen.generate_action_modification_explanation(
-                    agent_id, action, safe_action,
-                    triggered_rule.name if triggered_rule else "unknown",
-                    state_dict, reason or "violation de sécurité"
-                )
             
+            explanation = self.explanation_gen.generate_action_modification_explanation(
+                agent_id, action, safe_action,
+                triggered_rule.name if triggered_rule else "unknown",
+                state_dict, reason or "Securite"
+            )
             self.explanation_gen.add_explanation(explanation)
-        else:
-            # Optionnel: générer une explication pour les actions sûres
-            pass
         
-        return safe_action, modified, explanation
+        return safe_action, modified, reason
     
     def _observation_to_state(self, obs: np.ndarray) -> Dict:
-        """Convertit l'observation en dictionnaire d'état"""
+        """Convertit l'observation en dictionnaire d'etat"""
         return {
             'temperature': obs[0] * 850,
             'pressure': obs[1] * 10,
@@ -575,7 +524,7 @@ class ExplainableShield:
         }
     
     def get_stats(self) -> Dict:
-        """Retourne les statistiques"""
+        """Retourne les statistiques du shield"""
         return {
             'total_checks': self.total_checks,
             'modified_actions': self.modified_actions,
@@ -583,3 +532,37 @@ class ExplainableShield:
             'modification_rate': self.modified_actions / max(1, self.total_checks),
             'explanations_count': len(self.explanation_gen.explanation_history)
         }
+
+
+# Fonction utilitaire pour creer un generateur d'explications par defaut
+def create_explanation_generator() -> ExplanationGenerator:
+    """Cree un generateur d'explications avec la configuration par defaut"""
+    return ExplanationGenerator()
+
+
+if __name__ == "__main__":
+    # Test rapide du module
+    print("Test du module d'explicabilite")
+    print("=" * 50)
+    
+    gen = ExplanationGenerator()
+    
+    exp1 = gen.generate_safe_action_explanation(0, 1, {"temperature": 650, "pressure": 7.5})
+    gen.add_explanation(exp1)
+    
+    exp2 = gen.generate_action_modification_explanation(
+        0, 2, 0, "temperature_high", 
+        {"temperature": 820, "pressure": 8.5}, 
+        "Temperature elevee > 800C"
+    )
+    gen.add_explanation(exp2)
+    
+    exp3 = gen.generate_anomaly_explanation(1, "temperature", 950, 820)
+    gen.add_explanation(exp3)
+    
+    exp4 = gen.generate_rapid_change_explanation(0, 65, 820, 650)
+    gen.add_explanation(exp4)
+    
+    print(f"Total explications: {len(gen.explanation_history)}")
+    print(gen.get_explanations_summary())
+    print("\nTest reussi!")

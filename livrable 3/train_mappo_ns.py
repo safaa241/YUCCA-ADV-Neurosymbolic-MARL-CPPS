@@ -1,8 +1,5 @@
-"""
-LIVRABLE 3 - Entraînement MAPPO-NS (Neurosymbolique)
-Entraîne le système multi-agents avec shield neurosymbolique
-
-"""
+# Entraîne MAPPO avec ou sans shield neurosymbolique
+# Version avec seuils dynamiques, tests robustesse, et injection de bruit
 
 import sys
 import os
@@ -14,13 +11,147 @@ import json
 from pathlib import Path
 from datetime import datetime
 import logging
+import random
 from typing import Dict, List, Tuple, Optional
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Dans train_mappo_ns.py, à chaque changement de produit
+from knowledge_base import PRODUCTION_CONTEXTS  # déjà défini
+kb.update_thresholds_for_product(env.get_product_type())
 
 # Import des modules
 from mappo_ns_agent import MultiAgentMAPPO_NS
-from cpps_environment import CPPSProductionEnv
+from cpps_environment import CPPSProductionEnv, PRODUCT_TYPES, PRODUCT_THRESHOLDS
 
+
+# ============================================================================
+# MODULE D'INJECTION DE BRUIT (Intégré directement)
+# ============================================================================
+
+# ========== 5. INJECTEUR DE BRUIT / DÉFAILLANCES CAPTEURS ==========
+
+class SensorNoiseInjector:
+    """Simule des défaillances de capteurs pour tester la robustesse"""
+    
+    def __init__(self, fault_probability: float = 0.02):
+        self.fault_probability = fault_probability
+        self.fault_types = ["nan", "out_of_range", "spike", "stuck"]
+        self.fault_counters = {ft: 0 for ft in self.fault_types}
+        self.stuck_values = {}
+    
+    def inject_noise(self, observation: np.ndarray, step: int, agent_id: int):
+        if random.random() > self.fault_probability:
+            return observation, None
+        
+        fault_type = random.choice(self.fault_types)
+        obs_copy = observation.copy()
+        
+        if fault_type == "nan":
+            sensor_idx = random.randint(0, 5)
+            obs_copy[sensor_idx] = np.nan
+            msg = f"NaN sur capteur {sensor_idx}"
+            
+        elif fault_type == "out_of_range":
+            sensor_idx = random.randint(0, 5)
+            obs_copy[sensor_idx] = random.uniform(1.5, 3.0)
+            msg = f"Valeur {obs_copy[sensor_idx]:.2f} hors [0,1]"
+            
+        elif fault_type == "spike":
+            obs_copy[0] = min(1.2, obs_copy[0] + random.uniform(0.3, 0.8))
+            msg = f"Pic de température: +{random.uniform(0.3,0.8):.2f}"
+            
+        elif fault_type == "stuck":
+            stuck_key = f"stuck_{agent_id}"
+            if stuck_key not in self.stuck_values:
+                self.stuck_values[stuck_key] = observation.mean()
+            obs_copy[:] = self.stuck_values[stuck_key]
+            msg = f"Capteurs bloqués à {self.stuck_values[stuck_key]:.2f}"
+        
+        self.fault_counters[fault_type] += 1
+        return obs_copy, msg
+    
+    def get_statistics(self):
+        total = sum(self.fault_counters.values())
+        return {"total_faults": total, "by_type": self.fault_counters}
+
+
+# ========== 6. SCÉNARIOS DE TEST ==========
+
+def create_rapid_temperature_rise(observation: np.ndarray, step: int, 
+                                   start_step: int = 100, 
+                                   rise_rate: float = 0.02) -> np.ndarray:
+    """Simule une montée rapide de température (panne)"""
+    obs_copy = observation.copy()
+    if step >= start_step:
+        increase = min(0.8, (step - start_step) * rise_rate)
+        obs_copy[0] = min(1.0, observation[0] + increase)
+        obs_copy[1] = min(1.0, observation[1] + increase * 0.5)
+    return obs_copy
+
+
+def create_rule_conflict_scenario(observation: np.ndarray, conflict_type: str = "temp_pressure") -> np.ndarray:
+    """Crée un état qui déclenche plusieurs règles simultanément"""
+    obs_copy = observation.copy()
+    if conflict_type == "temp_pressure":
+        obs_copy[0] = 0.96  # ~816°C → R3
+        obs_copy[1] = 0.92  # ~9.2 bar → R4
+    return obs_copy
+
+
+# ========== 7. GESTION DES CONTEXTES DYNAMIQUES ==========
+
+PRODUCTION_CYCLE = ['steel', 'aluminium', 'steel', 'titanium', 'plastic', 'steel']
+CYCLE_LENGTH = 10  # Changement tous les 10 épisodes
+
+
+def update_production_context(env, episode: int):
+    """Change le contexte de production tous les N épisodes"""
+    cycle_position = (episode // CYCLE_LENGTH) % len(PRODUCTION_CYCLE)
+    new_context = PRODUCTION_CYCLE[cycle_position]
+    
+    current = getattr(update_production_context, 'last_context', None)
+    
+    if current != new_context:
+        update_production_context.last_context = new_context
+        env.set_product_type(new_context)
+        return True, new_context
+    
+    return False, current
+
+# ============================================================================
+# GESTION DES SEUILS DYNAMIQUES
+# ============================================================================
+
+PRODUCTION_CYCLE = ['steel', 'aluminium', 'steel', 'titanium', 'plastic', 'steel']
+CYCLE_LENGTH = 10  # Changement tous les 10 épisodes
+
+
+def update_production_context(env, episode: int, logger: logging.Logger = None) -> Tuple[bool, str]:
+    """
+    Change le contexte de production tous les N épisodes
+    """
+    cycle_position = (episode // CYCLE_LENGTH) % len(PRODUCTION_CYCLE)
+    new_context = PRODUCTION_CYCLE[cycle_position]
+    
+    current = getattr(update_production_context, 'last_context', None)
+    
+    if current != new_context:
+        update_production_context.last_context = new_context
+        env.set_product_type(new_context)
+        
+        if logger:
+            thresholds = PRODUCT_THRESHOLDS[new_context]
+            logger.info(f"🔄 [CONTEXTE] Changement: {current} → {new_context}")
+            logger.info(f"   Température max: {thresholds['temperature_max']}°C")
+            logger.info(f"   Pression max: {thresholds['pressure_max']} bar")
+        
+        return True, new_context
+    
+    return False, current
+
+
+# ============================================================================
+# LOGGER
+# ============================================================================
 
 def setup_logger(name: str) -> logging.Logger:
     """Configure le logger"""
@@ -44,12 +175,33 @@ def setup_logger(name: str) -> logging.Logger:
     
     return logger
 
-# Entraînement du système MAPPO-NS avec ou sans shield et collecte des métriques détaillées pour analyse approfondie et comparaison avec la baseline MAPPO standard. 
+
+# ============================================================================
+# ENTRAÎNEMENT PRINCIPAL
+# ============================================================================
+
 def train_mappo_ns(num_episodes: int = 50,
                    episode_length: int = 500,
                    use_shield: bool = True,
                    log_interval: int = 5,
-                   save_interval: int = 25) -> Tuple[MultiAgentMAPPO_NS, Dict]:
+                   save_interval: int = 25,
+                   test_robustness: bool = True,
+                   dynamic_context: bool = True) -> Tuple[MultiAgentMAPPO_NS, Dict]:
+    """
+    Entraîne MAPPO-NS avec options avancées
+    
+    Args:
+        num_episodes: Nombre d'épisodes
+        episode_length: Longueur par épisode
+        use_shield: Activer/désactiver le shield
+        log_interval: Intervalle d'affichage
+        save_interval: Intervalle de sauvegarde
+        test_robustness: Activer les tests d'injection de bruit
+        dynamic_context: Activer les changements dynamiques de contexte
+        
+    Returns:
+        (système entraîné, métriques)
+    """
     
     algo_name = "MAPPO-NS" if use_shield else "MAPPO-Standard"
     logger = setup_logger(algo_name)
@@ -57,10 +209,12 @@ def train_mappo_ns(num_episodes: int = 50,
     logger.info("="*70)
     logger.info(f"LIVRABLE 3 - Entraînement {algo_name}")
     logger.info(f"Shield neurosymbolique: {'ACTIF' if use_shield else 'INACTIF'}")
+    logger.info(f"Tests robustesse: {'ACTIFS' if test_robustness else 'INACTIFS'}")
+    logger.info(f"Contexte dynamique: {'ACTIF' if dynamic_context else 'INACTIF'}")
     logger.info("="*70)
     
     # Environnement
-    env = CPPSProductionEnv(num_agents=3, episode_length=episode_length)
+    env = CPPSProductionEnv(num_agents=3, episode_length=episode_length, product_type='steel')
     logger.info(f"Environnement créé: {env.num_agents} agents, {episode_length} steps/épisode")
     
     # Dimensions
@@ -80,6 +234,9 @@ def train_mappo_ns(num_episodes: int = 50,
     
     logger.info(f"Système {system.name} initialisé")
     
+    # Initialiser l'injecteur de bruit pour les tests robustesse
+    noise_injector = SensorNoiseInjector(fault_probability=0.02) if test_robustness else None
+    
     # Métriques
     metrics = {
         'episode_rewards': [],
@@ -88,37 +245,91 @@ def train_mappo_ns(num_episodes: int = 50,
         'episode_productions': [],
         'episode_corrections': [],
         'actor_losses': [],
-        'critic_losses': []
+        'critic_losses': [],
+        'context_changes': [],
+        'robustness_events': []
+    }
+    
+    robustness_stats = {
+        "sensor_faults_detected": 0,
+        "rapid_rise_events": 0,
+        "conflict_resolutions": 0,
+        "recovery_actions": 0
     }
     
     # Boucle d'entraînement
     for episode in range(num_episodes):
+        # Changement dynamique de contexte
+        if dynamic_context:
+            context_changed, new_context = update_production_context(env, episode, logger)
+            if context_changed:
+                metrics['context_changes'].append({
+                    "episode": episode,
+                    "new_context": new_context,
+                    "thresholds": env.get_current_thresholds()
+                })
+                # Mettre à jour les seuils du shield pour tous les agents
+                if use_shield:
+                    for agent_id, agent in system.agents.items():
+                        if hasattr(agent, 'kb') and agent.kb:
+                            agent.kb.update_thresholds_for_product(new_context)
+        
         observations, _ = env.reset()
         episode_reward = 0
         episode_violations = 0
         episode_corrections = 0
-        
-        # Stockage pour l'épisode
-        episode_values = {i: [] for i in range(env.num_agents)}
-        episode_log_probs = {i: [] for i in range(env.num_agents)}
+        episode_robustness_events = []
         
         for step in range(episode_length):
-            # Sélection des actions
+            # ========== TESTS DE ROBUSTESSE INTÉGRÉS ==========
+            
+            # 1. Test de montée rapide de température (tous les 1000 steps)
+            if test_robustness and step % 1000 == 0 and step > 0:
+                for agent_id in range(env.num_agents):
+                    observations[agent_id] = create_rapid_temperature_rise(
+                        observations[agent_id], step, start_step=step, rise_rate=0.05
+                    )
+                robustness_stats["rapid_rise_events"] += 1
+                episode_robustness_events.append({"type": "rapid_rise", "step": step})
+                if step % 2000 == 0:
+                    logger.warning(f"⚠️ [ROBUSTESSE] Montée rapide de température simulée au step {step}")
+            
+            # 2. Test de conflit de règles (tous les 2000 steps)
+            if test_robustness and step % 2000 == 0 and step > 0:
+                for agent_id in range(env.num_agents):
+                    observations[agent_id] = create_rule_conflict_scenario(
+                        observations[agent_id], conflict_type="temp_pressure"
+                    )
+                robustness_stats["conflict_resolutions"] += 1
+                episode_robustness_events.append({"type": "rule_conflict", "step": step})
+                if step % 2000 == 0:
+                    logger.warning(f"⚠️ [ROBUSTESSE] Conflit de règles simulé au step {step}")
+            
+            # ========== SÉLECTION DES ACTIONS ==========
             actions = {}
             values = {}
             log_probs = {}
             
             for agent_id, obs in observations.items():
+                # Injection aléatoire de bruit capteur
+                if test_robustness and noise_injector:
+                    noisy_obs, fault_report = noise_injector.inject_noise(obs, step, agent_id)
+                    if fault_report:
+                        robustness_stats["sensor_faults_detected"] += 1
+                        episode_robustness_events.append({
+                            "type": "sensor_fault",
+                            "step": step,
+                            "agent": agent_id,
+                            "message": fault_report
+                        })
+                        if step % 500 == 0:
+                            logger.warning(f"🔴 [ROBUSTESSE] {fault_report}")
+                        obs = noisy_obs
+                
                 action, log_prob, value = system.agents[agent_id].select_action(obs, explore=True)
                 actions[agent_id] = action
                 values[agent_id] = value
                 log_probs[agent_id] = log_prob
-                
-                # Compter les corrections si shield actif
-                if use_shield and system.agents[agent_id].shield:
-                    # Vérifier si l'action a été modifiée
-                    # (simplifié - dans la réalité, on vérifierait le flag)
-                    pass
             
             # Exécution dans l'environnement
             next_obs, rewards, dones, truncated, info = env.step(actions)
@@ -160,6 +371,8 @@ def train_mappo_ns(num_episodes: int = 50,
         metrics['episode_corrections'].append(episode_corrections)
         metrics['actor_losses'].append(actor_loss)
         metrics['critic_losses'].append(critic_loss)
+        if episode_robustness_events:
+            metrics['robustness_events'].extend(episode_robustness_events)
         
         # Logging
         if (episode + 1) % log_interval == 0:
@@ -168,6 +381,7 @@ def train_mappo_ns(num_episodes: int = 50,
             logger.info(f"  Safety: {safety_rate:.2%}")
             logger.info(f"  Violations: {episode_violations}")
             logger.info(f"  Production: {env.total_production}")
+            logger.info(f"  Produit: {env.get_product_type()}")
             if use_shield:
                 logger.info(f"  Shield corrections: {episode_corrections}")
             logger.info(f"  Actor Loss: {actor_loss:.4f} | Critic Loss: {critic_loss:.4f}")
@@ -176,6 +390,7 @@ def train_mappo_ns(num_episodes: int = 50,
         # Sauvegarde périodique
         if (episode + 1) % save_interval == 0:
             save_path = Path(f"results/checkpoints/{algo_name}_ep{episode+1}.pt")
+            save_path.parent.mkdir(parents=True, exist_ok=True)
             system.agents[0].save(str(save_path))
     
     # Résultats finaux
@@ -193,7 +408,23 @@ def train_mappo_ns(num_episodes: int = 50,
         logger.info(f"Shield - Actions bloquées: {final_shield_stats.get('blocked_actions', 0)}")
         logger.info(f"Shield - Taux d'intervention: {final_shield_stats.get('intervention_rate', 0):.2%}")
     
-    logger.info("="*70)
+    # Rapport de robustesse
+    if test_robustness:
+        logger.info("\n" + "="*70)
+        logger.info("🔬 RAPPORT DE ROBUSTESSE")
+        logger.info("="*70)
+        logger.info(f"  Défauts capteurs injectés: {robustness_stats['sensor_faults_detected']}")
+        logger.info(f"  Montées rapides simulées: {robustness_stats['rapid_rise_events']}")
+        logger.info(f"  Conflits de règles simulés: {robustness_stats['conflict_resolutions']}")
+        if noise_injector:
+            logger.info(f"  Statistiques injecteur: {noise_injector.get_statistics()}")
+        
+        # Rapport de tolérance aux pannes du shield
+        if use_shield and system.agents[0].shield:
+            ft_report = system.agents[0].shield.get_fault_tolerance_report()
+            logger.info(f"  Taux de tolérance aux pannes: {ft_report['fault_tolerance_rate']:.2%}")
+            logger.info(f"  Recommandation: {ft_report['recommendation']}")
+        logger.info("="*70)
     
     # Sauvegarde des métriques
     output_dir = Path("results/livrable3")
@@ -205,6 +436,8 @@ def train_mappo_ns(num_episodes: int = 50,
         "use_shield": use_shield,
         "num_episodes": num_episodes,
         "episode_length": episode_length,
+        "dynamic_context": dynamic_context,
+        "test_robustness": test_robustness,
         "metrics": {
             "episode_rewards": [float(r) for r in metrics['episode_rewards']],
             "episode_violations": [int(v) for v in metrics['episode_violations']],
@@ -221,7 +454,9 @@ def train_mappo_ns(num_episodes: int = 50,
             "std_safety": float(np.std(metrics['episode_safety_rates'])),
             "total_violations": int(sum(metrics['episode_violations'])),
             "total_production": int(metrics['episode_productions'][-1]) if metrics['episode_productions'] else 0
-        }
+        },
+        "robustness_stats": robustness_stats if test_robustness else None,
+        "context_changes": metrics['context_changes'] if dynamic_context else None
     }
     
     if use_shield:
@@ -240,12 +475,9 @@ def train_mappo_ns(num_episodes: int = 50,
     return system, metrics
 
 
-def compare_with_baseline(num_episodes: int = 50):
+def compare_with_baseline(num_episodes: int = 50, test_robustness: bool = True):
     """
     Compare MAPPO-NS avec MAPPO standard
-    
-    Returns:
-        Dictionnaire de comparaison
     """
     print("\n" + "="*70)
     print("COMPARAISON: MAPPO Standard vs MAPPO-NS (Neurosymbolique)")
@@ -253,11 +485,19 @@ def compare_with_baseline(num_episodes: int = 50):
     
     # Entraînement MAPPO standard (sans shield)
     print("\n📊 Entraînement MAPPO Standard (sans shield)...")
-    system_std, metrics_std = train_mappo_ns(num_episodes=num_episodes, use_shield=False)
+    system_std, metrics_std = train_mappo_ns(
+        num_episodes=num_episodes, 
+        use_shield=False,
+        test_robustness=test_robustness
+    )
     
     # Entraînement MAPPO-NS (avec shield)
     print("\n🛡️ Entraînement MAPPO-NS (avec shield neurosymbolique)...")
-    system_ns, metrics_ns = train_mappo_ns(num_episodes=num_episodes, use_shield=True)
+    system_ns, metrics_ns = train_mappo_ns(
+        num_episodes=num_episodes, 
+        use_shield=True,
+        test_robustness=test_robustness
+    )
     
     # Comparaison
     comparison = {
@@ -311,10 +551,22 @@ if __name__ == "__main__":
                        help='Nombre d\'épisodes d\'entraînement')
     parser.add_argument('--no-shield', action='store_true',
                        help='Désactiver le shield (MAPPO standard)')
+    parser.add_argument('--no-robustness', action='store_true',
+                       help='Désactiver les tests de robustesse')
+    parser.add_argument('--no-context', action='store_true',
+                       help='Désactiver les changements de contexte dynamique')
     
     args = parser.parse_args()
     
     if args.compare:
-        compare_with_baseline(num_episodes=args.episodes)
+        compare_with_baseline(
+            num_episodes=args.episodes,
+            test_robustness=not args.no_robustness
+        )
     else:
-        train_mappo_ns(num_episodes=args.episodes, use_shield=not args.no_shield)
+        train_mappo_ns(
+            num_episodes=args.episodes, 
+            use_shield=not args.no_shield,
+            test_robustness=not args.no_robustness,
+            dynamic_context=not args.no_context
+        )

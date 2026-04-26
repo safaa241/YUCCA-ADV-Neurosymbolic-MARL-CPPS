@@ -1,270 +1,360 @@
-# notre jumeau numérique. C'est le cœur de la simulation.
-# Il simule une ligne de production avec plusieurs machines (agents) qui interagissent.
-# Chaque machine a des paramètres (température, pression, vitesse) et doit produire des pièces tout en respectant les limites de sûreté.
-# Les agents prennent des actions pour ajuster leurs paramètres, et l'environnement calcule les conséquences de ces actions, y compris les violations de sûreté et les récompenses.
-# Version 1.0 - Initialisation de l'environnement avec des machines de base et des règles simples
-
+# Jumeau numérique (3 machines, physique simulée)
+# Version avec contexte de production dynamique
 
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
-from typing import Dict, Tuple, Any
+from typing import Dict, Tuple, Any, Optional
 from dataclasses import dataclass
+import random
 
 
 @dataclass
-
-# Structure de données pour l'état d'une machine
 class MachineState:
-    temperature: float = 20.0 # Température initiale (°C)
-    pressure: float = 5.0 # Pression initiale (bar)
-    speed: float = 0.0 # Vitesse initiale (pièces/minute)
-    production_count: int = 0 # Nombre de pièces produites
-    maintenance_needed: bool = False # Indique si la machine nécessite une maintenance
+    """Structure de données pour l'état d'une machine"""
+    temperature: float = 20.0
+    pressure: float = 5.0
+    speed: float = 0.0
+    production_count: int = 0
+    maintenance_needed: bool = False
 
-# Environnement de production CPPS
+
+# Types de produits possibles pour les seuils dynamiques
+PRODUCT_TYPES = ['steel', 'aluminium', 'titanium', 'plastic']
+
+# Seuils par type de produit
+PRODUCT_THRESHOLDS = {
+    "steel": {
+        "name": "Acier",
+        "temperature_max": 850,
+        "temperature_warning": 800,
+        "temperature_high": 750,
+        "pressure_max": 10,
+        "pressure_warning": 9.0,
+        "pressure_high": 8.5,
+        "speed_max": 10,
+        "production_target": 10
+    },
+    "aluminium": {
+        "name": "Aluminium",
+        "temperature_max": 650,
+        "temperature_warning": 600,
+        "temperature_high": 550,
+        "pressure_max": 8,
+        "pressure_warning": 7.0,
+        "pressure_high": 6.5,
+        "speed_max": 12,
+        "production_target": 20
+    },
+    "titanium": {
+        "name": "Titane",
+        "temperature_max": 950,
+        "temperature_warning": 900,
+        "temperature_high": 850,
+        "pressure_max": 12,
+        "pressure_warning": 11.0,
+        "pressure_high": 10.5,
+        "speed_max": 8,
+        "production_target": 5
+    },
+    "plastic": {
+        "name": "Plastique",
+        "temperature_max": 400,
+        "temperature_warning": 350,
+        "temperature_high": 300,
+        "pressure_max": 5,
+        "pressure_warning": 4.5,
+        "pressure_high": 4.0,
+        "speed_max": 6,
+        "production_target": 15
+    }
+}
+
+
 class CPPSProductionEnv(gym.Env):
+    """
+    Environnement de production CPPS avec contexte dynamique
+    """
     
-    metadata = {'render_modes': ['human', 'rgb_array']} # Modes de rendu disponibles
-    # Version 1.0 - Initialisation de l'environnement avec des machines de base et des règles simples
-    def __init__(self, num_agents=3, episode_length=500, render_mode=None):
+    metadata = {'render_modes': ['human', 'rgb_array']}
+    
+    def __init__(self, num_agents=3, episode_length=500, render_mode=None, product_type='steel'):
+        super().__init__()
         
-        super().__init__() # Appel du constructeur parent
-        
-        self.num_agents = num_agents # Nombre d'agents (machines)
-        self.episode_length = episode_length # Nombre de steps par épisode
-        self.render_mode = render_mode # Mode de rendu (human, rgb_array, etc.)
+        self.num_agents = num_agents
+        self.episode_length = episode_length
+        self.render_mode = render_mode
+        self.current_product = product_type
         
         # Configuration des machines
         self.machines = {
-            0: {"name": "Welding Robot", "max_temp": 850, "max_speed": 10}, # Robot de soudure
-            1: {"name": "Painting Robot", "max_pressure": 10, "max_speed": 10}, # Robot de peinture
-            2: {"name": "Quality Control", "max_precision": 100, "max_speed": 5} # Contrôle qualité
+            0: {"name": "Welding Robot", "type": "temperature_sensitive"},
+            1: {"name": "Painting Robot", "type": "pressure_sensitive"},
+            2: {"name": "Quality Control", "type": "precision_sensitive"}
         }
         
         # États et actions
-        self.action_spaces = { # Chaque agent peut choisir parmi 5 actions
-            i: spaces.Discrete(5) for i in range(num_agents) 
+        self.action_spaces = {
+            i: spaces.Discrete(5) for i in range(num_agents)
         }
-        # Actions: 0=décrémenter, 1=maintenir, 2=incrémenter, 3=idle, 4=stop
+        # Actions: 0=reduce_speed, 1=maintain_speed, 2=increase_speed, 3=idle, 4=emergency_stop
         
-        self.observation_spaces = { # Chaque agent observe 6 variables normalisées entre 0 et 1
-            i: spaces.Box(low=0, high=1, shape=(6,), dtype=np.float32) 
-            for i in range(num_agents) 
+        self.observation_spaces = {
+            i: spaces.Box(low=0, high=1, shape=(6,), dtype=np.float32)
+            for i in range(num_agents)
         }
-        # Observation: [temperature/max_temp, pressure/max_pressure, speed/max_speed,
-        #               production_count/target, maintenance_needed, time_step/episode_length]
         
-        
-        self.machine_states = {i: MachineState() for i in range(num_agents)} # Initialisation des états des machines
+        self.machine_states = {i: MachineState() for i in range(num_agents)}
         
         # Paramètres de simulation
-        self.current_step = 0 # Compteur de steps dans l'épisode
-        self.total_production = 0 # Compteur de pièces produites
-        self.total_reward = 0 # Compteur de récompenses accumulées
-        self.violations_log = [] # Journal des violations de sûreté (température, pression, etc.)
+        self.current_step = 0
+        self.total_production = 0
+        self.total_reward = 0
+        self.violations_log = []
         
-        # Cibles de production
-        self.production_target = {0: 10, 1: 10, 2: 10}  # pièces/minute
+        # Initialiser les seuils selon le produit
+        self._update_thresholds_from_product()
         
-        # Limites de sûreté
+        # Debug
+        self.debug_counter = 0
+        self.context_change_history = []
+    
+    def _update_thresholds_from_product(self):
+        """Met à jour les seuils selon le type de produit actuel"""
+        thresholds = PRODUCT_THRESHOLDS.get(self.current_product, PRODUCT_THRESHOLDS['steel'])
+        
         self.safety_limits = {
-            "temperature_max": 850,
-            "temperature_min": 0,
-            "pressure_max": 10,
-            "pressure_min": 0,
-            "speed_max": 10,
+            "temperature_max": thresholds["temperature_max"],
+            "temperature_warning": thresholds["temperature_warning"],
+            "temperature_high": thresholds["temperature_high"],
+            "pressure_max": thresholds["pressure_max"],
+            "pressure_warning": thresholds["pressure_warning"],
+            "pressure_high": thresholds["pressure_high"],
+            "speed_max": thresholds["speed_max"],
             "speed_min": 0
         }
         
-        # Debug: compteur pour affichage
-        self.debug_counter = 0
+        self.production_target = {
+            0: thresholds["production_target"],
+            1: thresholds["production_target"],
+            2: thresholds["production_target"]
+        }
+        
+        return thresholds
     
-    # RÉINITIALISATION DE L'ENVIRONNEMENT
-    def reset(self, seed=None, options=None): 
+    def set_product_type(self, product_type: str) -> str:
+        """
+        Change le type de produit à fabriquer
         
-        super().reset(seed=seed) # Appel du reset du parent pour la gestion des seeds
+        Args:
+            product_type: 'steel', 'aluminium', 'titanium', 'plastic'
         
-        self.current_step = 0 # Réinitialiser le compteur de steps
-        self.total_production = 0 # Réinitialiser le compteur de production
-        self.total_reward = 0 # Réinitialiser le compteur de récompenses
+        Returns:
+            Nom du produit (pour confirmation)
+        """
+        if product_type not in PRODUCT_TYPES:
+            product_type = 'steel'
+        
+        old_product = self.current_product
+        self.current_product = product_type
+        thresholds = self._update_thresholds_from_product()
+        
+        self.context_change_history.append({
+            "step": self.current_step,
+            "episode": getattr(self, '_current_episode', 0),
+            "old_product": old_product,
+            "new_product": product_type,
+            "new_thresholds": thresholds
+        })
+        
+        print(f"🏭 [ENV] Changement de production: {old_product} → {product_type}")
+        print(f"   Température max: {thresholds['temperature_max']}°C")
+        print(f"   Pression max: {thresholds['pressure_max']} bar")
+        
+        return product_type
+    
+    def get_product_type(self) -> str:
+        """Retourne le type de produit actuel"""
+        return self.current_product
+    
+    def get_current_thresholds(self) -> dict:
+        """Retourne les seuils actuels"""
+        return self.safety_limits.copy()
+    
+    def reset(self, seed=None, options=None):
+        super().reset(seed=seed)
+        
+        # Enregistrer l'épisode pour le contexte
+        self._current_episode = getattr(self, '_current_episode', 0) + 1
+        
+        self.current_step = 0
+        self.total_production = 0
+        self.total_reward = 0
         self.violations_log = []
         self.debug_counter = 0
         
-        # Réinitialiser les machines avec des valeurs aléatoires
+        # Réinitialiser les machines avec des valeurs aléatoires selon le produit
+        thresholds = self.safety_limits
         self.machine_states = {
             i: MachineState(
-                temperature=20.0 + np.random.rand() * 50, # Température initiale entre 20 et 70°C
-                pressure=5.0 + np.random.rand() * 2, # Pression initiale entre 5 et 7 bar
-                speed=0.0, # Vitesse initiale à 0
-                production_count=0, # Compteur de production à 0
-                maintenance_needed=False # Pas de maintenance nécessaire au départ
-            ) for i in range(self.num_agents) # Réinitialisation pour chaque agent
+                temperature=20.0 + np.random.rand() * min(50, thresholds["temperature_warning"] / 10),
+                pressure=5.0 + np.random.rand() * min(2, thresholds["pressure_warning"] / 5),
+                speed=0.0,
+                production_count=0,
+                maintenance_needed=False
+            ) for i in range(self.num_agents)
         }
         
-        # Observations initiales
         observations = {i: self._get_observation(i) for i in range(self.num_agents)}
-        info = {} # Informations supplémentaires (vide pour l'instant)
+        info = {"product_type": self.current_product, "thresholds": self.safety_limits}
         
         return observations, info
-    # CALCUL DE L'OBSERVATION POUR UN AGENT
+    
     def _get_observation(self, agent_id):
+        """Calcule l'observation normalisée"""
+        machine = self.machine_states[agent_id]
+        limits = self.safety_limits
         
-        machine = self.machine_states[agent_id] # Récupérer l'état de la machine pour l'agent donné
-        # Normaliser les observations par rapport aux limites de sûreté et aux cibles de production
         obs = np.array([
-            machine.temperature / self.safety_limits["temperature_max"], 
-            machine.pressure / self.safety_limits["pressure_max"], 
-            machine.speed / self.safety_limits["speed_max"],# Normalisation de la vitesse
-            min(1.0, machine.production_count / self.production_target.get(agent_id, 10)), # Normalisation de la production par rapport à la cible
-            float(machine.maintenance_needed), # 1.0 si maintenance nécessaire, sinon 0.0
-            self.current_step / self.episode_length # Normalisation du temps écoulé dans l'épisode
-        ], dtype=np.float32) # Normalisation des observations pour les rendre compatibles avec les réseaux de neurones
+            machine.temperature / limits["temperature_max"],
+            machine.pressure / limits["pressure_max"],
+            machine.speed / limits["speed_max"],
+            min(1.0, machine.production_count / self.production_target.get(agent_id, 10)),
+            float(machine.maintenance_needed),
+            self.current_step / self.episode_length
+        ], dtype=np.float32)
+        
+        # Sécurisation des valeurs
+        obs = np.clip(obs, 0, 1)
+        obs = np.nan_to_num(obs, nan=0.0)
         
         return obs
-    # EXÉCUTION D'UNE ÉTAPE DE SIMULATION
+    
     def step(self, actions: Dict[int, int]):
-
-        self.current_step += 1 # Incrémenter le compteur de steps
+        self.current_step += 1
         
-        observations = {} # Observations pour chaque agent
-        rewards = {} # Récompenses pour chaque agent
-        dones = {} # Indique si l'épisode est terminé pour chaque agent
-        truncated = {} # Indique si l'épisode a été tronqué (terminé prématurément)
-        info = {} # Informations supplémentaires pour chaque agent
+        observations = {}
+        rewards = {}
+        dones = {}
+        truncated = {}
+        info = {}
         
-        # Traiter les actions de chaque agent
         for agent_id, action in actions.items():
             self._apply_action(agent_id, action)
             
-            # Vérifier les violations de sûreté
             violations = self._check_safety(agent_id)
             info[agent_id] = {"violations": violations}
             
-            # Calculer les récompenses
             reward = self._calculate_reward(agent_id, violations)
             rewards[agent_id] = reward
             self.total_reward += reward
             
-            # Observations
             observations[agent_id] = self._get_observation(agent_id)
             
-            # Condition de fin
             done = self.current_step >= self.episode_length
             dones[agent_id] = done
             truncated[agent_id] = False
         
-        # Informations globales
         info["global"] = {
             "total_production": self.total_production,
             "total_reward": self.total_reward,
             "violations": len(self.violations_log),
-            "step": self.current_step
+            "step": self.current_step,
+            "product_type": self.current_product
         }
         
         return observations, rewards, dones, truncated, info
-    # APPLICATION D'UNE ACTION POUR UN AGENT
+    
     def _apply_action(self, agent_id: int, action: int):
-        
         machine = self.machine_states[agent_id]
+        limits = self.safety_limits
+        dt = 0.01
         
-        dt = 0.01  # Pas de temps simulé (secondes)
-        
-        # ========== 1. APPLIQUER L'ACTION ==========
-        if action == 0:  # Décrémenter la vitesse
+        # Application de l'action
+        if action == 0:  # reduce_speed
             machine.speed = max(0, machine.speed - 0.5)
-        elif action == 1:  # Maintenir
+        elif action == 1:  # maintain_speed
             pass
-        elif action == 2:  # Augmenter la vitesse
-            max_speed = self.machines[agent_id]["max_speed"]
+        elif action == 2:  # increase_speed
+            max_speed = limits["speed_max"]
             machine.speed = min(max_speed, machine.speed + 0.5)
-        elif action == 3:  # Mode idle
+        elif action == 3:  # idle
             machine.speed = 0
-        elif action == 4:  # Stop d'urgence
+        elif action == 4:  # emergency_stop
             machine.speed = 0
             machine.maintenance_needed = True
         
-        # ========== 2. PHYSIQUE SIMULÉE (CORRIGÉE) ==========
+        # Physique simulée
         if machine.speed > 0:
-            # La température AUGMENTE avec la vitesse
-            # Facteur x100 pour que la température atteigne 800°C pendant l'épisode
+            # La température augmente avec la vitesse
             machine.temperature += machine.speed * dt * 100
-            machine.temperature = min(self.safety_limits["temperature_max"], machine.temperature)
+            machine.temperature = min(limits["temperature_max"], machine.temperature)
             
             # Pression pour le robot de peinture (agent 1)
             if agent_id == 1:
                 machine.pressure = 5 + machine.speed * 0.3
-                machine.pressure = min(self.safety_limits["pressure_max"], machine.pressure)
+                machine.pressure = min(limits["pressure_max"], machine.pressure)
             
-            # Production (uniquement si conditions raisonnablement sûres)
-            # Seuils plus réalistes pour permettre la production
-            if machine.temperature < 800 and machine.pressure < 9.5:
+            # Production (uniquement si conditions sûres)
+            if (machine.temperature < limits["temperature_warning"] and 
+                machine.pressure < limits["pressure_warning"]):
                 production_increment = int(machine.speed * 0.5)
                 if production_increment > 0:
                     machine.production_count += production_increment
                     self.total_production += production_increment
-                    
-                    # DEBUG: Afficher quand on produit (tous les 100 steps)
-                    if self.current_step % 100 == 0 and agent_id == 0:
-                        print(f"[PROD] Step {self.current_step}: T={machine.temperature:.1f}°C, "
-                              f"speed={machine.speed:.1f}, prod={production_increment}")
         else:
-            # Refroidissement (plus rapide quand on arrête)
+            # Refroidissement
             machine.temperature = max(20, machine.temperature - 1.0)
             if agent_id == 1:
                 machine.pressure = max(0, machine.pressure - 0.2)
-        
-        # ========== 3. DEBUG: Afficher la température périodiquement ==========
-        if self.current_step % 100 == 0 and agent_id == 0:
-            print(f"[ENV] Step {self.current_step}: T={machine.temperature:.1f}°C, "
-                  f"speed={machine.speed:.1f}, action={action}")
-    # VÉRIFICATION DES VIOLATIONS DE SÛRETÉ
+    
     def _check_safety(self, agent_id: int) -> list:
-        
         machine = self.machine_states[agent_id]
+        limits = self.safety_limits
         violations = []
         
-        # Vérifier température (CRITIQUE)
-        if machine.temperature >= self.safety_limits["temperature_max"]:
-            severity = min(1.0, (machine.temperature - self.safety_limits["temperature_max"]) / 50)
+        # Vérification température
+        if machine.temperature >= limits["temperature_max"]:
+            severity = min(1.0, (machine.temperature - limits["temperature_max"]) / 50)
             violations.append({
                 "type": "temperature_critical",
                 "value": machine.temperature,
-                "limit": self.safety_limits["temperature_max"],
+                "limit": limits["temperature_max"],
                 "severity": severity
             })
             self.violations_log.append(violations[-1])
-        elif machine.temperature > 800:  # Alerte température élevée
-            severity = (machine.temperature - 800) / 50
+        elif machine.temperature > limits["temperature_warning"]:
+            severity = (machine.temperature - limits["temperature_warning"]) / 50
             violations.append({
                 "type": "temperature_warning",
                 "value": machine.temperature,
-                "limit": 800,
+                "limit": limits["temperature_warning"],
                 "severity": severity
             })
             self.violations_log.append(violations[-1])
         
-        # Vérifier pression (pour agent 1)
-        if agent_id == 1 and machine.pressure >= self.safety_limits["pressure_max"]:
-            severity = min(1.0, (machine.pressure - self.safety_limits["pressure_max"]) / 2)
-            violations.append({
-                "type": "pressure_critical",
-                "value": machine.pressure,
-                "limit": self.safety_limits["pressure_max"],
-                "severity": severity
-            })
-            self.violations_log.append(violations[-1])
-        elif agent_id == 1 and machine.pressure > 9.0:
-            severity = (machine.pressure - 9.0) / 1.0
-            violations.append({
-                "type": "pressure_warning",
-                "value": machine.pressure,
-                "limit": 9.0,
-                "severity": severity
-            })
-            self.violations_log.append(violations[-1])
+        # Vérification pression (agent 1)
+        if agent_id == 1:
+            if machine.pressure >= limits["pressure_max"]:
+                severity = min(1.0, (machine.pressure - limits["pressure_max"]) / 2)
+                violations.append({
+                    "type": "pressure_critical",
+                    "value": machine.pressure,
+                    "limit": limits["pressure_max"],
+                    "severity": severity
+                })
+                self.violations_log.append(violations[-1])
+            elif machine.pressure > limits["pressure_warning"]:
+                severity = (machine.pressure - limits["pressure_warning"]) / 1.0
+                violations.append({
+                    "type": "pressure_warning",
+                    "value": machine.pressure,
+                    "limit": limits["pressure_warning"],
+                    "severity": severity
+                })
+                self.violations_log.append(violations[-1])
         
-        # Vérifier maintenance
+        # Vérification maintenance
         if machine.maintenance_needed:
             violations.append({
                 "type": "maintenance_required",
@@ -273,60 +363,58 @@ class CPPSProductionEnv(gym.Env):
         
         return violations
     
-    # CALCUL DE LA RÉCOMPENSE POUR UN AGENT
     def _calculate_reward(self, agent_id: int, violations: list) -> float:
         machine = self.machine_states[agent_id]
         reward = 0.0
-    
-    # RÉCOMPENSE POUR PRODUCTION (forte)
+        
+        # Récompense pour production
         reward += machine.production_count * 0.3
-    
-    # BONUS POUR VITESSE POSITIVE
+        
+        # Bonus pour vitesse positive
         if machine.speed > 0:
             reward += 1.0
         else:
-            reward -= 2.0  # Pénalité forte pour rester à l'arrêt
-    
-    # SÉCURITÉ
+            reward -= 2.0
+        
+        # Sécurité
         if len(violations) == 0:
             reward += 2.0
         else:
             for v in violations:
-                reward -= 50.0
-    
-    # PÉNALITÉ STOP INUTILE
-        if machine.speed == 0 and not machine.maintenance_needed and machine.temperature < 800:
-            reward -= 3.0
-    
-        return reward
-
-    # RENDU DE L'ENVIRONNEMENT
-    def render(self):
+                if "critical" in v["type"]:
+                    reward -= 100.0
+                elif "warning" in v["type"]:
+                    reward -= 50.0
+                else:
+                    reward -= 20.0
         
+        # Pénalité stop inutile
+        thresholds = self.safety_limits
+        if machine.speed == 0 and not machine.maintenance_needed and machine.temperature < thresholds["temperature_warning"]:
+            reward -= 3.0
+        
+        return reward
+    
+    def render(self):
         if self.render_mode == "human":
-            print(f"\n--- Step {self.current_step} ---")
+            print(f"\n--- Step {self.current_step} (Produit: {self.current_product}) ---")
             for i, machine in self.machine_states.items():
                 print(f"Agent {i} ({self.machines[i]['name']}):")
                 print(f"  Temperature: {machine.temperature:.1f}°C")
                 print(f"  Pressure: {machine.pressure:.1f} bar")
                 print(f"  Speed: {machine.speed:.1f}")
                 print(f"  Production: {machine.production_count}")
-
-    # fermeture de l'environnement (vide pour l'instant)
+    
     def close(self):
-        
         pass
     
-    # RÉSUMÉ DES VIOLATIONS
     def get_violations_summary(self):
-
         summary = {
             "total": len(self.violations_log),
             "by_type": {},
             "by_severity": {"low": 0, "medium": 0, "high": 0}
         }
         
-        # Compter les violations par type et par sévérité
         for v in self.violations_log:
             vtype = v["type"]
             summary["by_type"][vtype] = summary["by_type"].get(vtype, 0) + 1
@@ -340,3 +428,7 @@ class CPPSProductionEnv(gym.Env):
                 summary["by_severity"]["high"] += 1
         
         return summary
+    
+    def get_context_change_history(self):
+        """Retourne l'historique des changements de contexte"""
+        return self.context_change_history

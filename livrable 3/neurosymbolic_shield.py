@@ -1,7 +1,9 @@
 """
 LIVRABLE 3 - Shield Neurosymbolique pour CPPS
-Filtre les actions des agents avec des règles symboliques
+Version complète avec validation des capteurs et gestion des conflits
 
+Auteur: FEKNI Safaa
+Projet: YUCCA-ADV PFE 2026
 """
 
 import numpy as np
@@ -10,36 +12,38 @@ from datetime import datetime
 import json
 from pathlib import Path
 
-from knowledge_base import KnowledgeBase, RuleEngine, SafetyLevel, SafetyRule
+from knowledge_base import KnowledgeBase, SafetyLevel
 
 
 class SymbolicShield:
     """
-    Shield neurosymbolique pour la sécurité garantie
-    
-    Combine:
-    - Apprentissage neuronal (MAPPO) pour la performance
-    - Raisonnement symbolique (règles) pour la sécurité
-    
-    Garantit que toutes les actions exécutées sont sûres
+    Shield neurosymbolique avec:
+    - Validation des observations aberrantes
+    - Détection et résolution de conflits
+    - Journalisation des interventions
+    - Rapport de tolérance aux pannes
     """
     
     def __init__(self, knowledge_base: KnowledgeBase = None, 
-                 record_explanations: bool = True):
+                 record_explanations: bool = True,
+                 config_path: Optional[str] = None):
         
-        self.kb = knowledge_base or KnowledgeBase()
-        self.rule_engine = RuleEngine(self.kb)
+        self.kb = knowledge_base or KnowledgeBase(config_path)
         self.record_explanations = record_explanations
         
         # Statistiques
-        self.blocked_actions = 0      # Actions bloquées (STOP forcé)
-        self.corrected_actions = 0    # Actions corrigées
-        self.safe_actions = 0         # Actions déjà sûres
+        self.blocked_actions = 0
+        self.corrected_actions = 0
+        self.safe_actions = 0
         self.total_checks = 0
+        self.sensor_error_corrections = 0
+        self.conflict_resolutions = 0
         
-        # Historique des explications
+        # Historique
         self.explanations = []
         self.intervention_history = []
+        self.sensor_error_log = []
+        self.conflict_resolution_log = []
         
         # Mapping des actions
         self.action_names = {
@@ -49,70 +53,32 @@ class SymbolicShield:
             3: "idle",
             4: "emergency_stop"
         }
+        
+        # Métadonnées
+        self.simulation_mode = True  # True pour simulation, False pour réel
+        self.fault_injection_enabled = False  # Pour tester la robustesse
     
-    # Méthode principale pour filtrer une action proposée par l'agent en fonction de l'observation courante
-    def filter_action(self, action: int, observation: np.ndarray, 
-                      agent_id: int = 0) -> Tuple[int, bool, Optional[str], Optional[Dict]]:
-        
-        self.total_checks += 1
-        
-        # 1. Convertir l'observation en état compréhensible
-        state_dict = self._observation_to_state(observation, agent_id)
-        
-        # 2. Effectuer l'inférence symbolique
-        inference = self.rule_engine.infer(state_dict, action)
-        
-        # 3. Ajouter les métadonnées
-        inference["timestamp"] = datetime.now().isoformat()
-        inference["agent_id"] = agent_id
-        
-        safe_action = inference["safe_action"]
-        was_modified = inference["was_modified"]
-        explanation = inference["explanation"]
-        
-        # 4. Mettre à jour les statistiques
-        if was_modified:
-            if safe_action == 4:  # emergency_stop
-                self.blocked_actions += 1
-            else:
-                self.corrected_actions += 1
-        else:
-            self.safe_actions += 1
-        
-        # 5. Enregistrer l'explication
-        if was_modified and self.record_explanations:
-            explanation_record = {
-                "timestamp": datetime.now().isoformat(),
-                "agent_id": agent_id,
-                "state": state_dict,
-                "original_action": action,
-                "original_action_name": self.action_names.get(action, "unknown"),
-                "safe_action": safe_action,
-                "safe_action_name": self.action_names.get(safe_action, "unknown"),
-                "explanation": explanation,
-                "triggering_rule": inference["triggering_rule"],
-                "active_rules": inference["active_rules"],
-                "safety_level": inference["safety_level"]
-            }
-            self.explanations.append(explanation_record)
-            self.intervention_history.append(explanation_record)
-        
-        return safe_action, was_modified, explanation, inference
     
     def _observation_to_state(self, obs: np.ndarray, agent_id: int) -> Dict:
         """
         Convertit une observation normalisée en état interprétable
-        
-        Observation format: [temp_norm, pressure_norm, speed_norm, 
-                            production_norm, maintenance_norm, time_norm]
+        avec validation prélable
         """
+        # Validation des capteurs
+        obs, was_corrected, error_msg = self.validate_observation(obs)
+        
         # Dénormalisation
-        temperature = obs[0] * 850  # 0-1 → 0-850°C
-        pressure = obs[1] * 10       # 0-1 → 0-10 bar
-        speed = obs[2] * 10          # 0-1 → 0-10 m/s
-        production = obs[3] * 100    # 0-1 → 0-100 pièces
+        temperature = obs[0] * 850
+        pressure = obs[1] * 10
+        speed = obs[2] * 10
+        production = obs[3] * 100
         maintenance_needed = obs[4] > 0.5
-        time_step = obs[5] * 500     # 0-1 → 0-500 steps
+        time_step = obs[5] * 500
+        
+        # Sécurisation des valeurs
+        temperature = max(0, min(1000, temperature))
+        pressure = max(0, min(15, pressure))
+        speed = max(0, min(12, speed))
         
         return {
             'temperature': temperature,
@@ -121,182 +87,309 @@ class SymbolicShield:
             'production': production,
             'maintenance_needed': maintenance_needed,
             'time_step': time_step,
-            'agent_id': agent_id
+            'agent_id': agent_id,
+            'sensor_error_corrected': was_corrected,
+            'sensor_error_message': error_msg
         }
     
+    def filter_action(self, action: int, observation: np.ndarray, 
+                      agent_id: int = 0) -> Tuple[int, bool, Optional[str], Optional[Dict]]:
+        """
+        Filtre une action avec:
+        - Validation des capteurs
+        - Détection des conflits
+        - Application des règles
+        - Résolution des conflits
+        """
+        self.total_checks += 1
+        
+        # 1. Convertir l'observation (avec validation)
+        try:
+            state_dict = self._observation_to_state(observation, agent_id)
+            sensor_error = state_dict.pop('sensor_error_corrected', False)
+            sensor_error_msg = state_dict.pop('sensor_error_message', None)
+        except Exception as e:
+            # Erreur critique → STOP forcé
+            self.blocked_actions += 1
+            error_inference = {
+                "timestamp": datetime.now().isoformat(),
+                "agent_id": agent_id,
+                "error": str(e),
+                "critical_fallback": True
+            }
+            return 4, True, f"🔴 ERREUR CRITIQUE CAPTEUR → STOP", error_inference
+        
+        # 2. Si erreur capteur en mode simulation, on continue avec état corrigé
+        #    En mode réel, on force STOP
+        if sensor_error and not self.simulation_mode:
+            self.blocked_actions += 1
+            return 4, True, f"🔴 CAPTEUR DÉFAILLANT EN MODE REEL → STOP PREVENTIF", {"sensor_error": True}
+        
+        # 3. Détecter les conflits entre règles
+        conflicts = self.kb.detect_conflicts(state_dict)
+        if conflicts:
+            self.conflict_resolutions += 1
+            self.conflict_resolution_log.append({
+                "timestamp": datetime.now().isoformat(),
+                "conflicts": conflicts,
+                "action_proposed": action,
+                "agent_id": agent_id
+            })
+        
+        # 4. Obtenir l'action sûre (avec résolution de conflits intégrée)
+        safe_action, explanation, triggering_rule = self.kb.get_safe_action(state_dict, action)
+        was_modified = (safe_action != action)
+        
+        # 5. Construction de l'inférence
+        inference = {
+            "timestamp": datetime.now().isoformat(),
+            "agent_id": agent_id,
+            "state": state_dict,
+            "proposed_action": action,
+            "proposed_action_name": self.action_names.get(action, "unknown"),
+            "safe_action": safe_action,
+            "safe_action_name": self.action_names.get(safe_action, "unknown"),
+            "was_modified": was_modified,
+            "explanation": explanation,
+            "triggering_rule": triggering_rule.name if triggering_rule else None,
+            "sensor_error": sensor_error,
+            "sensor_error_msg": sensor_error_msg,
+            "conflicts_detected": len(conflicts) > 0,
+            "conflict_count": len(conflicts),
+            "simulation_mode": self.simulation_mode
+        }
+        
+        # 6. Mettre à jour les statistiques
+        if was_modified:
+            if safe_action == 4:
+                self.blocked_actions += 1
+                inference["intervention_type"] = "blocked"
+            else:
+                self.corrected_actions += 1
+                inference["intervention_type"] = "corrected"
+        else:
+            self.safe_actions += 1
+            inference["intervention_type"] = "safe"
+        
+        # 7. Enregistrer l'explication
+        if (was_modified or sensor_error or conflicts) and self.record_explanations:
+            self.explanations.append(inference)
+            if was_modified or sensor_error:
+                self.intervention_history.append(inference)
+        
+        return safe_action, was_modified, explanation, inference
+    
     def get_safe_actions(self, observation: np.ndarray, agent_id: int = 0) -> List[int]:
-        """
-        Retourne la liste des actions sûres pour l'état courant
-        
-        Args:
-            observation: Observation normalisée
-            agent_id: Identifiant de l'agent
-            
-        Returns:
-            Liste des actions sûres
-        """
+        """Retourne la liste des actions sûres pour l'état courant"""
         state_dict = self._observation_to_state(observation, agent_id)
-        active_rules = self.rule_engine.kb.get_all_active_rules(state_dict)
         
-        # Commencer avec toutes les actions
+        # En cas d'erreur capteur critique, retourner uniquement STOP
+        if state_dict.get('sensor_error_corrected', False) and not self.simulation_mode:
+            return [4]
+        
+        active_rules = self.kb.get_all_active_rules(state_dict)
         safe_actions = set([0, 1, 2, 3, 4])
         
         for rule in active_rules:
-            if rule.rule_type.value == "blocking":
-                # Règle bloquante: seulement l'action forcée
-                if rule.action is not None:
-                    return [rule.action]
-            
-            elif rule.rule_type.value == "corrective":
-                # Règle corrective: supprimer les actions interdites
-                if rule.forbidden_actions:
-                    safe_actions -= set(rule.forbidden_actions)
+            if rule.rule_type.value == "blocking" and rule.action is not None:
+                return [rule.action]
+            elif rule.rule_type.value == "corrective" and rule.forbidden_actions:
+                safe_actions -= set(rule.forbidden_actions)
         
-        # Si aucune action n'est sûre, retourner STOP
         if not safe_actions:
             return [4]
         
         return list(safe_actions)
     
-    def get_safety_level(self, observation: np.ndarray, agent_id: int = 0) -> str:
-        """Retourne le niveau de sécurité de l'état courant"""
-        state_dict = self._observation_to_state(observation, agent_id)
-        return self.rule_engine.kb.get_safety_level(state_dict).value
-    
     def get_stats(self) -> Dict:
-        """Retourne les statistiques complètes du shield"""
+        """Retourne les statistiques complètes"""
         return {
             'total_checks': self.total_checks,
             'safe_actions': self.safe_actions,
             'corrected_actions': self.corrected_actions,
             'blocked_actions': self.blocked_actions,
+            'sensor_error_corrections': self.sensor_error_corrections,
+            'conflict_resolutions': self.conflict_resolutions,
             'intervention_rate': (self.corrected_actions + self.blocked_actions) / max(1, self.total_checks),
             'safety_rate': self.safe_actions / max(1, self.total_checks),
-            'rule_statistics': self.rule_engine.kb.get_rule_statistics(),
-            'total_interventions': len(self.intervention_history)
+            'rule_statistics': self.kb.get_rule_statistics(),
+            'conflict_statistics': self.kb.get_conflict_summary(),
+            'total_interventions': len(self.intervention_history),
+            'simulation_mode': self.simulation_mode
         }
     
-    def get_recent_explanations(self, n: int = 10) -> List[Dict]:
-        """Retourne les n dernières explications"""
-        return self.explanations[-n:] if self.explanations else []
+    # ========== 3. VALIDATION DES OBSERVATIONS ABERRANTES ==========
+
+def validate_observation(self, observation: np.ndarray) -> Tuple[np.ndarray, bool, str]:
+    """
+    Valide et corrige les observations aberrantes
+    Problèmes détectés: NaN, valeurs hors [0,1], valeurs physiquement impossibles
+    """
+    obs_corrected = observation.copy()
+    corrected = False
+    errors = []
     
-    def get_explanations_by_agent(self, agent_id: int) -> List[Dict]:
-        """Retourne les explications pour un agent spécifique"""
-        return [exp for exp in self.explanations if exp.get('agent_id') == agent_id]
+    # Valeurs par défaut sûres
+    default_values = [0.35, 0.5, 0.2, 0.1, 0.0, 0.5]
+    field_names = ["temperature", "pressure", "speed", "production", "maintenance", "time"]
     
-    def get_explanations_by_rule(self, rule_name: str) -> List[Dict]:
-        """Retourne les explications pour une règle spécifique"""
-        return [exp for exp in self.explanations if exp.get('triggering_rule') == rule_name]
-    
-    def export_explanations(self, filepath: str):
-        """Exporte les explications au format JSON"""
-        output_path = Path(filepath)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+    for i, val in enumerate(observation):
+        # NaN
+        if np.isnan(val):
+            obs_corrected[i] = default_values[i] if i < len(default_values) else 0.5
+            corrected = True
+            errors.append(f"{field_names[i]}: NaN → valeur par défaut")
         
-        export_data = {
+        # Hors [0,1]
+        elif val < 0 or val > 1:
+            obs_corrected[i] = max(0, min(1, default_values[i] if i < len(default_values) else 0.5))
+            corrected = True
+            errors.append(f"{field_names[i]}: {val:.2f} hors [0,1] → corrigé")
+    
+    # Vérification physique (température dénormalisée)
+    if len(observation) >= 2:
+        temp_sim = obs_corrected[0] * 850
+        if temp_sim > 1200:
+            obs_corrected[0] = 0.35
+            corrected = True
+            errors.append(f"température {temp_sim:.0f}°C > 1200°C (impossible)")
+    
+    error_msg = "; ".join(errors) if errors else None
+    
+    if corrected:
+        self.sensor_error_corrections += 1
+        self.sensor_error_log.append({
             "timestamp": datetime.now().isoformat(),
-            "total_explanations": len(self.explanations),
-            "explanations": self.explanations,
-            "statistics": self.get_stats()
-        }
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(export_data, f, indent=2, ensure_ascii=False)
-        
-        print(f"✅ Explications exportées dans {filepath}")
-    
-    def reset(self):
-        """Réinitialise les statistiques du shield"""
-        self.blocked_actions = 0
-        self.corrected_actions = 0
-        self.safe_actions = 0
-        self.total_checks = 0
-        self.explanations = []
-        self.intervention_history = []
-        self.rule_engine.kb.reset_statistics()
-    
-    def get_action_mask(self, observation: np.ndarray, agent_id: int = 0) -> np.ndarray:
-        """
-        Retourne un masque d'actions binaire (1 = sûre, 0 = dangereuse)
-        
-        Utile pour l'action masking dans l'agent
-        """
-        safe_actions = self.get_safe_actions(observation, agent_id)
-        mask = np.zeros(5, dtype=np.float32)
-        for action in safe_actions:
-            mask[action] = 1.0
-        return mask
-
-
-class NeurosymbolicWrapper:
-    """
-    Wrapper qui ajoute le shield neurosymbolique à n'importe quel agent
-    """
-    
-    def __init__(self, base_agent, shield: SymbolicShield = None):
-        self.base_agent = base_agent
-        self.shield = shield or SymbolicShield()
-        self.name = f"Neurosymbolic_{getattr(base_agent, 'name', 'Agent')}"
-        
-        # Historique
-        self.action_history = []
-        self.shield_interventions = []
-    
-    def select_action(self, observation: np.ndarray, explore: bool = True) -> int:
-        """
-        Sélectionne une action avec filtrage neurosymbolique
-        
-        Args:
-            observation: Observation normalisée
-            explore: Mode exploration (True) ou exploitation (False)
-            
-        Returns:
-            Action filtrée sûre
-        """
-        # 1. L'agent de base propose une action
-        if hasattr(self.base_agent, 'select_action'):
-            if explore:
-                raw_action, _, _ = self.base_agent.select_action(observation)
-            else:
-                raw_action, _, _ = self.base_agent.select_action(observation, explore=False)
-        else:
-            raw_action = self.base_agent.compute_action(observation)
-        
-        # 2. Le shield filtre l'action
-        safe_action, was_modified, explanation, inference = self.shield.filter_action(
-            raw_action, observation
-        )
-        
-        # 3. Historique
-        self.action_history.append({
-            'timestamp': datetime.now().isoformat(),
-            'observation': observation.copy(),
-            'raw_action': raw_action,
-            'safe_action': safe_action,
-            'was_modified': was_modified,
-            'explanation': explanation
+            "original": observation.tolist(),
+            "corrected": obs_corrected.tolist(),
+            "errors": errors
         })
-        
-        if was_modified:
-            self.shield_interventions.append({
-                'raw_action': raw_action,
-                'safe_action': safe_action,
-                'explanation': explanation
-            })
-        
-        return safe_action
+        print(f"⚠️ [CAPTEUR] {error_msg}")
     
-    def get_stats(self) -> Dict:
-        """Retourne les statistiques complètes"""
-        return {
-            'shield_stats': self.shield.get_stats(),
-            'total_actions': len(self.action_history),
-            'intervention_count': len(self.shield_interventions),
-            'intervention_rate': len(self.shield_interventions) / max(1, len(self.action_history))
+    return obs_corrected, corrected, error_msg
+
+
+# ========== 4. FILTRAGE AVEC VALIDATION ET CONFLITS ==========
+
+def filter_action_with_robustness(self, action: int, observation: np.ndarray, 
+                                   agent_id: int = 0) -> Tuple[int, bool, str, Dict]:
+    """
+    Version avancée du filtre avec:
+    - Validation des capteurs
+    - Détection des conflits
+    - Gestion des montées rapides
+    """
+    self.total_checks += 1
+    
+    # 1. Validation des capteurs
+    obs_validated, was_corrected, error_msg = self.validate_observation(observation)
+    
+    # 2. Conversion en état
+    state_dict = self._observation_to_state(obs_validated, agent_id)
+    state_dict['sensor_error'] = was_corrected
+    
+    # 3. Détection des conflits
+    conflicts = self.kb.detect_conflicts(state_dict)
+    if conflicts:
+        self.conflict_resolutions += 1
+        self.conflict_resolution_log.append({
+            "timestamp": datetime.now().isoformat(),
+            "conflicts": conflicts,
+            "action_proposed": action,
+            "agent_id": agent_id
+        })
+    
+    # 4. Obtention de l'action sûre
+    safe_action, explanation, triggered_rule = self.kb.get_safe_action(state_dict, action)
+    was_modified = (safe_action != action)
+    
+    # 5. Construction de l'inférence
+    inference = {
+        "timestamp": datetime.now().isoformat(),
+        "agent_id": agent_id,
+        "state": state_dict,
+        "proposed_action": action,
+        "proposed_action_name": self.action_names.get(action, "unknown"),
+        "safe_action": safe_action,
+        "safe_action_name": self.action_names.get(safe_action, "unknown"),
+        "was_modified": was_modified,
+        "explanation": explanation,
+        "triggering_rule": triggered_rule.name if triggered_rule else None,
+        "sensor_error": was_corrected,
+        "sensor_error_msg": error_msg,
+        "conflicts_detected": len(conflicts) > 0,
+        "conflict_count": len(conflicts)
+    }
+    
+    # 6. Mise à jour des stats
+    if was_modified:
+        if safe_action == 4:
+            self.blocked_actions += 1
+        else:
+            self.corrected_actions += 1
+    else:
+        self.safe_actions += 1
+    
+    # 7. Enregistrement
+    if (was_modified or was_corrected or conflicts) and self.record_explanations:
+        self.explanations.append(inference)
+    
+    return safe_action, was_modified, explanation, inference
+
+
+def get_fault_tolerance_report(self) -> Dict:
+    """Rapport complet sur la tolérance aux pannes"""
+    return {
+        "total_sensor_errors_corrected": self.sensor_error_corrections,
+        "total_conflicts_detected": len(self.conflict_resolution_log),
+        "fallback_actions_taken": self.blocked_actions,
+        "fault_tolerance_rate": (self.sensor_error_corrections + self.conflict_resolutions) / max(1, self.total_checks),
+        "is_fault_tolerant": True,
+        "default_fallback_action": "emergency_stop (4)",
+        "recommendation": "Ajouter un filtre médian et un vote majoritaire pour déploiement réel"
+    }
+
+def get_recent_explanations(self, n: int = 10) -> List[Dict]:
+    """Retourne les n dernières explications"""
+    return self.explanations[-n:] if self.explanations else []
+    
+def export_explanations(self, filepath: str):
+    """Exporte toutes les explications et logs"""
+    output_path = Path(filepath)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+    export_data = {
+        "timestamp": datetime.now().isoformat(),
+        "total_explanations": len(self.explanations),
+        "total_sensor_errors": len(self.sensor_error_log),
+        "total_conflicts": len(self.conflict_resolution_log),
+         "explanations": self.explanations[-200:],
+        "sensor_errors": self.sensor_error_log[-100:],
+        "conflict_resolutions": self.conflict_resolution_log[-100:],
+        "statistics": self.get_stats(),
+        "fault_tolerance": self.get_fault_tolerance_report()
         }
+        
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(export_data, f, indent=2, ensure_ascii=False)
+        
+    print(f"✅ Exports sauvegardés dans {filepath}")
     
-    def reset_history(self):
-        """Réinitialise l'historique"""
-        self.action_history = []
-        self.shield_interventions = []
-        self.shield.reset()
+def set_simulation_mode(self, enabled: bool = True):
+    """Active/désactive le mode simulation (affecte la tolérance aux pannes)"""
+    self.simulation_mode = enabled
+    print(f"Mode simulation: {'ACTIF' if enabled else 'INACTIF (mode réel)'}")
+    
+def reset(self):
+    """Réinitialise toutes les statistiques"""
+    self.blocked_actions = 0
+    self.corrected_actions = 0
+    self.safe_actions = 0
+    self.total_checks = 0
+    self.sensor_error_corrections = 0
+    self.conflict_resolutions = 0
+    self.explanations = []
+    self.intervention_history = []
+    self.sensor_error_log = []
+    self.conflict_resolution_log = []
+    self.kb.reset_statistics()

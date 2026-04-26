@@ -1,8 +1,6 @@
-"""
-LIVRABLE 3 - Agent MAPPO-NS (Neurosymbolique)
-Agent MAPPO avec intégration du shield neurosymbolique
+# Agent MAPPO-NS intégrant le shield neurosymbolique pour la sécurité dans les systèmes CPPS
+# ce qu'il produit : Agent sécurisé avec PPO et un shield symbolique pour garantir la sécurité, avec des explications sur les interventions du shield 
 
-"""
 
 import numpy as np
 import torch

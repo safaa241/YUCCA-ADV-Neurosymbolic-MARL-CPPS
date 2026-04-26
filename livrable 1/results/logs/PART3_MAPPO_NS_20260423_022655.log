@@ -1,0 +1,87 @@
+2026-04-23 02:26:55,148 - INFO - ============================================================
+2026-04-23 02:26:55,149 - INFO - PARTIE 3: MAPPO-NS (Neurosymbolique)
+2026-04-23 02:26:55,149 - INFO - Shield activé: True
+2026-04-23 02:26:55,149 - INFO - ============================================================
+2026-04-23 02:26:55,149 - INFO - Environnement créé avec 3 agents
+2026-04-23 02:26:56,394 - INFO - 3 agents MAPPO créés
+2026-04-23 02:27:03,449 - INFO - Episode 5/50
+2026-04-23 02:27:03,450 - INFO -   Reward: 2795.40
+2026-04-23 02:27:03,450 - INFO -   Production: 45
+2026-04-23 02:27:03,450 - INFO -   Violations: 0
+2026-04-23 02:27:03,450 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:27:03,451 - INFO -   Actions corrigées: 258
+2026-04-23 02:27:03,451 - INFO -   Actions bloquées: 0
+2026-04-23 02:27:10,906 - INFO - Episode 10/50
+2026-04-23 02:27:10,907 - INFO -   Reward: 9917.70
+2026-04-23 02:27:10,907 - INFO -   Production: 114
+2026-04-23 02:27:10,907 - INFO -   Violations: 0
+2026-04-23 02:27:10,907 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:27:10,907 - INFO -   Actions corrigées: 285
+2026-04-23 02:27:10,907 - INFO -   Actions bloquées: 0
+2026-04-23 02:27:17,875 - INFO - Episode 15/50
+2026-04-23 02:27:17,876 - INFO -   Reward: 11909.40
+2026-04-23 02:27:17,876 - INFO -   Production: 167
+2026-04-23 02:27:17,876 - INFO -   Violations: 0
+2026-04-23 02:27:17,876 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:27:17,876 - INFO -   Actions corrigées: 284
+2026-04-23 02:27:17,876 - INFO -   Actions bloquées: 0
+2026-04-23 02:27:24,951 - INFO - Episode 20/50
+2026-04-23 02:27:24,952 - INFO -   Reward: 4919.40
+2026-04-23 02:27:24,952 - INFO -   Production: 96
+2026-04-23 02:27:24,952 - INFO -   Violations: 0
+2026-04-23 02:27:24,952 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:27:24,952 - INFO -   Actions corrigées: 267
+2026-04-23 02:27:24,952 - INFO -   Actions bloquées: 0
+2026-04-23 02:27:31,637 - INFO - Episode 25/50
+2026-04-23 02:27:31,637 - INFO -   Reward: 10489.80
+2026-04-23 02:27:31,638 - INFO -   Production: 183
+2026-04-23 02:27:31,638 - INFO -   Violations: 0
+2026-04-23 02:27:31,638 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:27:31,638 - INFO -   Actions corrigées: 269
+2026-04-23 02:27:31,638 - INFO -   Actions bloquées: 0
+2026-04-23 02:27:40,892 - INFO - Episode 30/50
+2026-04-23 02:27:40,892 - INFO -   Reward: 13987.50
+2026-04-23 02:27:40,892 - INFO -   Production: 190
+2026-04-23 02:27:40,893 - INFO -   Violations: 0
+2026-04-23 02:27:40,893 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:27:40,893 - INFO -   Actions corrigées: 265
+2026-04-23 02:27:40,893 - INFO -   Actions bloquées: 0
+2026-04-23 02:27:52,678 - INFO - Episode 35/50
+2026-04-23 02:27:52,679 - INFO -   Reward: 7130.10
+2026-04-23 02:27:52,679 - INFO -   Production: 106
+2026-04-23 02:27:52,679 - INFO -   Violations: 0
+2026-04-23 02:27:52,679 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:27:52,679 - INFO -   Actions corrigées: 274
+2026-04-23 02:27:52,679 - INFO -   Actions bloquées: 0
+2026-04-23 02:28:03,778 - INFO - Episode 40/50
+2026-04-23 02:28:03,778 - INFO -   Reward: 16022.40
+2026-04-23 02:28:03,778 - INFO -   Production: 177
+2026-04-23 02:28:03,778 - INFO -   Violations: 0
+2026-04-23 02:28:03,778 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:28:03,779 - INFO -   Actions corrigées: 273
+2026-04-23 02:28:03,779 - INFO -   Actions bloquées: 0
+2026-04-23 02:28:15,500 - INFO - Episode 45/50
+2026-04-23 02:28:15,500 - INFO -   Reward: 6876.30
+2026-04-23 02:28:15,501 - INFO -   Production: 139
+2026-04-23 02:28:15,501 - INFO -   Violations: 0
+2026-04-23 02:28:15,501 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:28:15,501 - INFO -   Actions corrigées: 311
+2026-04-23 02:28:15,501 - INFO -   Actions bloquées: 0
+2026-04-23 02:28:24,074 - INFO - Episode 50/50
+2026-04-23 02:28:24,074 - INFO -   Reward: 17651.70
+2026-04-23 02:28:24,074 - INFO -   Production: 290
+2026-04-23 02:28:24,074 - INFO -   Violations: 0
+2026-04-23 02:28:24,075 - INFO -   Safety Rate: 100.00%
+2026-04-23 02:28:24,075 - INFO -   Actions corrigées: 269
+2026-04-23 02:28:24,075 - INFO -   Actions bloquées: 0
+2026-04-23 02:28:24,075 - INFO - 
+============================================================
+2026-04-23 02:28:24,075 - INFO - RÉSULTATS FINAUX - MAPPO-NS
+2026-04-23 02:28:24,075 - INFO - Reward Moyen: 9919.34 ± 5993.96
+2026-04-23 02:28:24,075 - INFO - Production Totale: 290
+2026-04-23 02:28:24,075 - INFO - Taux de Sécurité Moyen: 99.98%
+2026-04-23 02:28:24,076 - INFO - Total Violations: 14
+2026-04-23 02:28:24,076 - INFO - Actions corrigées (total): 13922
+2026-04-23 02:28:24,076 - INFO - Actions bloquées (total): 0
+2026-04-23 02:28:24,076 - INFO - ============================================================
+2026-04-23 02:28:24,078 - INFO - Résultats sauvegardés dans results\part3\metrics_ns.json
