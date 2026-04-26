@@ -1,0 +1,66 @@
+2026-04-26 22:18:55,887 - INFO - ======================================================================
+2026-04-26 22:18:55,888 - INFO - LIVRABLE 3 - Entraînement MAPPO-NS
+2026-04-26 22:18:55,888 - INFO - Shield neurosymbolique: ACTIF
+2026-04-26 22:18:55,888 - INFO - Tests robustesse: ACTIFS
+2026-04-26 22:18:55,888 - INFO - Contexte dynamique: ACTIF
+2026-04-26 22:18:55,888 - INFO - ======================================================================
+2026-04-26 22:18:55,889 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 22:18:55,889 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 22:18:55,895 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
+2026-04-26 22:18:55,895 - INFO - 🔄 [CONTEXTE] Changement: plastic → steel
+2026-04-26 22:18:55,895 - INFO -    Température max: 850°C
+2026-04-26 22:18:55,895 - INFO -    Pression max: 10 bar
+2026-04-26 22:18:58,472 - WARNING - 🔴 [ROBUSTESSE] Capteurs bloqués à 0.29
+2026-04-26 22:19:10,266 - INFO - Episode 5/50
+2026-04-26 22:19:10,266 - INFO -   Reward: -33000.00
+2026-04-26 22:19:10,267 - INFO -   Safety: 0.00%
+2026-04-26 22:19:10,267 - INFO -   Violations: 1500
+2026-04-26 22:19:10,267 - INFO -   Production: 0
+2026-04-26 22:19:10,267 - INFO -   Produit: steel
+2026-04-26 22:19:10,267 - INFO -   Shield corrections: 0
+2026-04-26 22:19:10,267 - INFO -   Actor Loss: -0.0470 | Critic Loss: 128494.9453
+2026-04-26 22:19:10,267 - INFO - --------------------------------------------------
+2026-04-26 22:19:14,869 - WARNING - 🔴 [ROBUSTESSE] Capteurs bloqués à 0.29
+2026-04-26 22:19:23,864 - INFO - Episode 10/50
+2026-04-26 22:19:23,864 - INFO -   Reward: -33000.00
+2026-04-26 22:19:23,864 - INFO -   Safety: 0.00%
+2026-04-26 22:19:23,864 - INFO -   Violations: 1500
+2026-04-26 22:19:23,865 - INFO -   Production: 0
+2026-04-26 22:19:23,865 - INFO -   Produit: steel
+2026-04-26 22:19:23,865 - INFO -   Shield corrections: 0
+2026-04-26 22:19:23,865 - INFO -   Actor Loss: -0.0233 | Critic Loss: 123078.9339
+2026-04-26 22:19:23,865 - INFO - --------------------------------------------------
+2026-04-26 22:19:23,866 - INFO - 🔄 [CONTEXTE] Changement: steel → aluminium
+2026-04-26 22:19:23,866 - INFO -    Température max: 650°C
+2026-04-26 22:19:23,867 - INFO -    Pression max: 8 bar
+2026-04-26 22:19:37,806 - INFO - Episode 15/50
+2026-04-26 22:19:37,806 - INFO -   Reward: -33000.00
+2026-04-26 22:19:37,806 - INFO -   Safety: 0.00%
+2026-04-26 22:19:37,806 - INFO -   Violations: 1500
+2026-04-26 22:19:37,807 - INFO -   Production: 0
+2026-04-26 22:19:37,807 - INFO -   Produit: aluminium
+2026-04-26 22:19:37,807 - INFO -   Shield corrections: 0
+2026-04-26 22:19:37,807 - INFO -   Actor Loss: 4.5989 | Critic Loss: 112223.1322
+2026-04-26 22:19:37,807 - INFO - --------------------------------------------------
+2026-04-26 22:19:40,581 - WARNING - 🔴 [ROBUSTESSE] NaN sur capteur 1
+2026-04-26 22:19:53,785 - INFO - Episode 20/50
+2026-04-26 22:19:53,786 - INFO -   Reward: -33000.00
+2026-04-26 22:19:53,786 - INFO -   Safety: 0.00%
+2026-04-26 22:19:53,786 - INFO -   Violations: 1500
+2026-04-26 22:19:53,786 - INFO -   Production: 0
+2026-04-26 22:19:53,787 - INFO -   Produit: aluminium
+2026-04-26 22:19:53,787 - INFO -   Shield corrections: 0
+2026-04-26 22:19:53,787 - INFO -   Actor Loss: 178.0438 | Critic Loss: 97009.8097
+2026-04-26 22:19:53,787 - INFO - --------------------------------------------------
+2026-04-26 22:19:53,788 - INFO - 🔄 [CONTEXTE] Changement: aluminium → steel
+2026-04-26 22:19:53,788 - INFO -    Température max: 850°C
+2026-04-26 22:19:53,788 - INFO -    Pression max: 10 bar
+2026-04-26 22:20:06,947 - INFO - Episode 25/50
+2026-04-26 22:20:06,947 - INFO -   Reward: -33000.00
+2026-04-26 22:20:06,947 - INFO -   Safety: 0.00%
+2026-04-26 22:20:06,948 - INFO -   Violations: 1500
+2026-04-26 22:20:06,948 - INFO -   Production: 0
+2026-04-26 22:20:06,948 - INFO -   Produit: steel
+2026-04-26 22:20:06,948 - INFO -   Shield corrections: 0
+2026-04-26 22:20:06,948 - INFO -   Actor Loss: 148.9636 | Critic Loss: 78616.4486
+2026-04-26 22:20:06,948 - INFO - --------------------------------------------------

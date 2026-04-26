@@ -1,0 +1,65 @@
+2026-04-26 22:56:35,278 - INFO - ======================================================================
+2026-04-26 22:56:35,278 - INFO - LIVRABLE 3 - Entraînement MAPPO-NS
+2026-04-26 22:56:35,279 - INFO - Shield neurosymbolique: ACTIF
+2026-04-26 22:56:35,279 - INFO - Tests robustesse: ACTIFS
+2026-04-26 22:56:35,279 - INFO - Contexte dynamique: ACTIF
+2026-04-26 22:56:35,279 - INFO - ======================================================================
+2026-04-26 22:56:35,280 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 22:56:35,281 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 22:56:37,920 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
+2026-04-26 22:56:37,921 - INFO - 🔄 [CONTEXTE] Changement: None → steel
+2026-04-26 22:56:37,921 - INFO -    Température max: 850°C
+2026-04-26 22:56:37,922 - INFO -    Pression max: 10 bar
+2026-04-26 22:56:42,418 - WARNING - 🔴 [ROBUSTESSE] Pic de température: +0.58
+2026-04-26 22:57:03,065 - INFO - Episode 5/50
+2026-04-26 22:57:03,065 - INFO -   Reward: -32720.00
+2026-04-26 22:57:03,066 - INFO -   Safety: 0.87%
+2026-04-26 22:57:03,066 - INFO -   Violations: 1487
+2026-04-26 22:57:03,066 - INFO -   Production: 0
+2026-04-26 22:57:03,066 - INFO -   Produit: steel
+2026-04-26 22:57:03,066 - INFO -   Shield corrections: 0
+2026-04-26 22:57:03,066 - INFO -   Actor Loss: -0.0505 | Critic Loss: 127913.3085
+2026-04-26 22:57:03,066 - INFO - --------------------------------------------------
+2026-04-26 22:57:22,584 - INFO - Episode 10/50
+2026-04-26 22:57:22,585 - INFO -   Reward: -27371.00
+2026-04-26 22:57:22,585 - INFO -   Safety: 11.07%
+2026-04-26 22:57:22,585 - INFO -   Violations: 1334
+2026-04-26 22:57:22,585 - INFO -   Production: 14
+2026-04-26 22:57:22,586 - INFO -   Produit: steel
+2026-04-26 22:57:22,586 - INFO -   Shield corrections: 0
+2026-04-26 22:57:22,586 - INFO -   Actor Loss: -0.0557 | Critic Loss: 96742.4650
+2026-04-26 22:57:22,587 - INFO - --------------------------------------------------
+2026-04-26 22:57:22,587 - INFO - 🔄 [CONTEXTE] Changement: steel → aluminium
+2026-04-26 22:57:22,588 - INFO -    Température max: 650°C
+2026-04-26 22:57:22,588 - INFO -    Pression max: 8 bar
+2026-04-26 22:57:42,274 - INFO - Episode 15/50
+2026-04-26 22:57:42,275 - INFO -   Reward: -25787.00
+2026-04-26 22:57:42,275 - INFO -   Safety: 25.27%
+2026-04-26 22:57:42,275 - INFO -   Violations: 1121
+2026-04-26 22:57:42,276 - INFO -   Production: 0
+2026-04-26 22:57:42,276 - INFO -   Produit: aluminium
+2026-04-26 22:57:42,276 - INFO -   Shield corrections: 187
+2026-04-26 22:57:42,276 - INFO -   Actor Loss: -0.0649 | Critic Loss: 83884.8744
+2026-04-26 22:57:42,277 - INFO - --------------------------------------------------
+2026-04-26 22:58:01,001 - INFO - Episode 20/50
+2026-04-26 22:58:01,002 - INFO -   Reward: -26084.00
+2026-04-26 22:58:01,002 - INFO -   Safety: 23.67%
+2026-04-26 22:58:01,003 - INFO -   Violations: 1145
+2026-04-26 22:58:01,003 - INFO -   Production: 0
+2026-04-26 22:58:01,004 - INFO -   Produit: aluminium
+2026-04-26 22:58:01,004 - INFO -   Shield corrections: 272
+2026-04-26 22:58:01,004 - INFO -   Actor Loss: -0.0634 | Critic Loss: 72959.2437
+2026-04-26 22:58:01,005 - INFO - --------------------------------------------------
+2026-04-26 22:58:01,006 - INFO - 🔄 [CONTEXTE] Changement: aluminium → steel
+2026-04-26 22:58:01,006 - INFO -    Température max: 850°C
+2026-04-26 22:58:01,007 - INFO -    Pression max: 10 bar
+2026-04-26 22:58:08,338 - WARNING - 🔴 [ROBUSTESSE] Capteurs bloqués à 0.33
+2026-04-26 22:58:20,478 - INFO - Episode 25/50
+2026-04-26 22:58:20,478 - INFO -   Reward: -20831.70
+2026-04-26 22:58:20,479 - INFO -   Safety: 40.00%
+2026-04-26 22:58:20,479 - INFO -   Violations: 900
+2026-04-26 22:58:20,479 - INFO -   Production: 1
+2026-04-26 22:58:20,479 - INFO -   Produit: steel
+2026-04-26 22:58:20,480 - INFO -   Shield corrections: 272
+2026-04-26 22:58:20,480 - INFO -   Actor Loss: -0.0545 | Critic Loss: 45790.7163
+2026-04-26 22:58:20,480 - INFO - --------------------------------------------------

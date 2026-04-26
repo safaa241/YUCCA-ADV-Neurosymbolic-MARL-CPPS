@@ -1,0 +1,150 @@
+{
+  "timestamp": "2026-04-26T23:10:23.794549",
+  "algorithm": "MAPPO-NS",
+  "use_shield": true,
+  "num_episodes": 10,
+  "episode_length": 500,
+  "dynamic_context": false,
+  "test_robustness": false,
+  "metrics": {
+    "episode_rewards": [
+      -32716.0,
+      -32170.700000000288,
+      -32830.0,
+      -32565.0,
+      -31751.200000000244,
+      -32018.0,
+      -29626.5,
+      -30737.0,
+      -31294.0,
+      -31738.200000000244
+    ],
+    "episode_violations": [
+      1486,
+      1475,
+      1492,
+      1479,
+      1450,
+      1454,
+      1377,
+      1397,
+      1420,
+      1449
+    ],
+    "episode_safety_rates": [
+      0.009333333333333305,
+      0.01666666666666672,
+      0.005333333333333301,
+      0.014000000000000012,
+      0.033333333333333326,
+      0.03066666666666662,
+      0.08199999999999996,
+      0.06866666666666665,
+      0.053333333333333344,
+      0.03400000000000003
+    ],
+    "episode_productions": [
+      0,
+      2,
+      0,
+      0,
+      1,
+      0,
+      5,
+      0,
+      0,
+      1
+    ],
+    "episode_corrections": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "actor_losses": [
+      -0.008194369373894813,
+      -0.02422572339936677,
+      -0.03436094671229108,
+      -0.0430922995825919,
+      -0.05488229896097133,
+      -0.042755669836575784,
+      -0.057120909287025116,
+      -0.0547512572310451,
+      -0.04767343128332868,
+      -0.04483597653193606
+    ],
+    "critic_losses": [
+      129548.18033854167,
+      125914.54123263889,
+      129257.2113172743,
+      128280.86490885417,
+      124210.78276909723,
+      125364.8583984375,
+      112062.58284505208,
+      118388.33029513889,
+      119467.98014322917,
+      118915.3505859375
+    ]
+  },
+  "summary": {
+    "mean_reward": -31744.66000000008,
+    "std_reward": 935.7246530897988,
+    "mean_safety": 0.034733333333333324,
+    "std_safety": 0.02452835094334717,
+    "total_violations": 14479,
+    "total_production": 1
+  },
+  "robustness_stats": null,
+  "context_changes": null,
+  "shield_stats": {
+    "total_checks": 15030,
+    "safe_actions": 2657,
+    "corrected_actions": 0,
+    "blocked_actions": 12373,
+    "intervention_rate": 0.8232202262142382,
+    "by_agent": {
+      "0": {
+        "total_checks": 5010,
+        "safe_actions": 942,
+        "corrected_actions": 0,
+        "blocked_actions": 4068,
+        "sensor_error_corrections": 0,
+        "conflict_resolutions": 0,
+        "intervention_rate": 0.8119760479041916,
+        "safety_rate": 0.18802395209580838,
+        "total_interventions": 4068,
+        "simulation_mode": true
+      },
+      "1": {
+        "total_checks": 5010,
+        "safe_actions": 895,
+        "corrected_actions": 0,
+        "blocked_actions": 4115,
+        "sensor_error_corrections": 0,
+        "conflict_resolutions": 0,
+        "intervention_rate": 0.8213572854291418,
+        "safety_rate": 0.17864271457085829,
+        "total_interventions": 4115,
+        "simulation_mode": true
+      },
+      "2": {
+        "total_checks": 5010,
+        "safe_actions": 820,
+        "corrected_actions": 0,
+        "blocked_actions": 4190,
+        "sensor_error_corrections": 0,
+        "conflict_resolutions": 0,
+        "intervention_rate": 0.8363273453093812,
+        "safety_rate": 0.16367265469061876,
+        "total_interventions": 4190,
+        "simulation_mode": true
+      }
+    }
+  }
+}

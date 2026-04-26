@@ -1,0 +1,80 @@
+{
+  "mappo": {
+    "baseline": {
+      "mean_safety": 0.8857599999999999,
+      "mean_reward": 115885.33592000007,
+      "total_violations": 8568,
+      "total_production": 996
+    },
+    "lagrangian": {
+      "mean_safety": 0.8861200000000001,
+      "mean_reward": 116405.39059999977,
+      "total_violations": 8541,
+      "total_production": 997
+    },
+    "cbf": {
+      "mean_safety": 0.8866533333333334,
+      "mean_reward": 115855.55600000035,
+      "total_violations": 8501,
+      "total_production": 955
+    },
+    "adaptive": {
+      "mean_safety": 0.88616,
+      "mean_reward": 83298.01799999998,
+      "total_violations": 8538,
+      "total_production": 984
+    }
+  },
+  "qmix": {
+    "baseline": {
+      "mean_safety": 0.8860666666666667,
+      "mean_reward": 115752.43239999986,
+      "total_violations": 8545,
+      "total_production": 984
+    },
+    "lagrangian": {
+      "mean_safety": 0.8855733333333333,
+      "mean_reward": 116044.63112000015,
+      "total_violations": 8582,
+      "total_production": 989
+    },
+    "cbf": {
+      "mean_safety": 0.8867733333333335,
+      "mean_reward": 115965.56600000012,
+      "total_violations": 8492,
+      "total_production": 940
+    },
+    "adaptive": {
+      "mean_safety": 0.8853866666666668,
+      "mean_reward": 84755.98599999989,
+      "total_violations": 8596,
+      "total_production": 1004
+    }
+  },
+  "maddpg": {
+    "baseline": {
+      "mean_safety": 0.8861200000000001,
+      "mean_reward": 116274.50743999999,
+      "total_violations": 8541,
+      "total_production": 980
+    },
+    "lagrangian": {
+      "mean_safety": 0.8857466666666667,
+      "mean_reward": 116289.44427999987,
+      "total_violations": 8569,
+      "total_production": 1006
+    },
+    "cbf": {
+      "mean_safety": 0.88696,
+      "mean_reward": 116134.51200000037,
+      "total_violations": 8478,
+      "total_production": 941
+    },
+    "adaptive": {
+      "mean_safety": 0.8857466666666667,
+      "mean_reward": 80415.24400000006,
+      "total_violations": 8569,
+      "total_production": 969
+    }
+  }
+}

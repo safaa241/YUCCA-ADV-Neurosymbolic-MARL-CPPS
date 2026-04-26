@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-04-26T21:02:54.923648",
+  "source": "R\u00e9sultats r\u00e9els des entra\u00eenements",
+  "algorithms": {
+    "MAPPO": {
+      "name": "MAPPO (Standard)",
+      "mean_safety_percent": 0.8720000000000003,
+      "total_violations": 74346,
+      "mean_reward": -75745.90199999967,
+      "total_production": 15,
+      "success": false
+    },
+    "MAPPO-NS": {
+      "name": "MAPPO-NS (Neurosymbolique)",
+      "mean_safety_percent": 99.98133333333334,
+      "total_violations": 14,
+      "mean_reward": 9919.335999999985,
+      "total_production": 290,
+      "success": true
+    },
+    "QMIX": {
+      "name": "QMIX",
+      "mean_safety_percent": 0.6,
+      "total_violations": 74800,
+      "mean_reward": -37450.0,
+      "total_production": 0,
+      "success": false
+    },
+    "MADDPG": {
+      "name": "MADDPG",
+      "mean_safety_percent": 0.5,
+      "total_violations": 74900,
+      "mean_reward": -37480.0,
+      "total_production": 0,
+      "success": false
+    }
+  }
+}

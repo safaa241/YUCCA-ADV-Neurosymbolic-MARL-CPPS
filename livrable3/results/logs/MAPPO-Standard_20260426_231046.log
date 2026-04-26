@@ -1,0 +1,8 @@
+2026-04-26 23:10:46,667 - INFO - ======================================================================
+2026-04-26 23:10:46,667 - INFO - LIVRABLE 3 - Entraînement MAPPO-Standard
+2026-04-26 23:10:46,667 - INFO - Shield neurosymbolique: INACTIF
+2026-04-26 23:10:46,668 - INFO - Tests robustesse: ACTIFS
+2026-04-26 23:10:46,668 - INFO - Contexte dynamique: ACTIF
+2026-04-26 23:10:46,669 - INFO - ======================================================================
+2026-04-26 23:10:46,670 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 23:10:46,670 - INFO - Dimensions: obs_dim=6, action_dim=5

@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-04-26T22:55:14.429562",
+  "num_episodes": 10,
+  "standard": {
+    "mean_safety": 0.011533333333333317,
+    "mean_reward": -26599.09000000013,
+    "total_violations": 14827,
+    "total_production": 319
+  },
+  "neurosymbolic": {
+    "mean_safety": 0.03846666666666667,
+    "mean_reward": -30699.229999999887,
+    "total_violations": 14423,
+    "total_production": 4
+  }
+}

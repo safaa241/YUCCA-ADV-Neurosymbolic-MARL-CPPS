@@ -1,0 +1,38 @@
+2026-04-26 22:50:05,269 - INFO - ======================================================================
+2026-04-26 22:50:05,270 - INFO - LIVRABLE 3 - Entraînement MAPPO-NS
+2026-04-26 22:50:05,270 - INFO - Shield neurosymbolique: ACTIF
+2026-04-26 22:50:05,270 - INFO - Tests robustesse: INACTIFS
+2026-04-26 22:50:05,270 - INFO - Contexte dynamique: ACTIF
+2026-04-26 22:50:05,271 - INFO - ======================================================================
+2026-04-26 22:50:05,271 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 22:50:05,271 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 22:50:05,289 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
+2026-04-26 22:50:18,443 - INFO - Episode 5/10
+2026-04-26 22:50:18,443 - INFO -   Reward: -32768.00
+2026-04-26 22:50:18,443 - INFO -   Safety: 0.67%
+2026-04-26 22:50:18,444 - INFO -   Violations: 1490
+2026-04-26 22:50:18,444 - INFO -   Production: 0
+2026-04-26 22:50:18,444 - INFO -   Produit: steel
+2026-04-26 22:50:18,444 - INFO -   Shield corrections: 0
+2026-04-26 22:50:18,444 - INFO -   Actor Loss: -0.0507 | Critic Loss: 128002.1825
+2026-04-26 22:50:18,444 - INFO - --------------------------------------------------
+2026-04-26 22:50:32,295 - INFO - Episode 10/10
+2026-04-26 22:50:32,296 - INFO -   Reward: -24726.80
+2026-04-26 22:50:32,296 - INFO -   Safety: 21.87%
+2026-04-26 22:50:32,296 - INFO -   Violations: 1172
+2026-04-26 22:50:32,296 - INFO -   Production: 11
+2026-04-26 22:50:32,296 - INFO -   Produit: steel
+2026-04-26 22:50:32,297 - INFO -   Shield corrections: 0
+2026-04-26 22:50:32,297 - INFO -   Actor Loss: -0.0723 | Critic Loss: 88018.4631
+2026-04-26 22:50:32,297 - INFO - --------------------------------------------------
+2026-04-26 22:50:32,297 - INFO - 
+======================================================================
+2026-04-26 22:50:32,297 - INFO - RÉSULTATS FINAUX - MAPPO-NS
+2026-04-26 22:50:32,297 - INFO - ======================================================================
+2026-04-26 22:50:32,298 - INFO - Reward moyen: -30814.71 ± 2770.84
+2026-04-26 22:50:32,298 - INFO - Taux sécurité moyen: 6.12%
+2026-04-26 22:50:32,298 - INFO - Total violations: 14082
+2026-04-26 22:50:32,298 - INFO - Production totale: 11
+2026-04-26 22:50:32,298 - INFO - Shield - Actions corrigées: 0
+2026-04-26 22:50:32,299 - INFO - Shield - Actions bloquées: 11647
+2026-04-26 22:50:32,299 - INFO - Shield - Taux d'intervention: 77.49%

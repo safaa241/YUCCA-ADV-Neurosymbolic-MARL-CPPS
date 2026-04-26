@@ -1,0 +1,37 @@
+2026-04-26 22:33:31,256 - INFO - ======================================================================
+2026-04-26 22:33:31,257 - INFO - LIVRABLE 3 - Entraînement MAPPO-Standard
+2026-04-26 22:33:31,257 - INFO - Shield neurosymbolique: INACTIF
+2026-04-26 22:33:31,257 - INFO - Tests robustesse: INACTIFS
+2026-04-26 22:33:31,257 - INFO - Contexte dynamique: ACTIF
+2026-04-26 22:33:31,257 - INFO - ======================================================================
+2026-04-26 22:33:31,258 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 22:33:31,258 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 22:33:32,613 - INFO - Système MAPPO (Standard) initialisé
+2026-04-26 22:33:32,613 - INFO - 🔄 [CONTEXTE] Changement: None → steel
+2026-04-26 22:33:32,614 - INFO -    Température max: 850°C
+2026-04-26 22:33:32,614 - INFO -    Pression max: 10 bar
+2026-04-26 22:33:41,602 - INFO - Episode 5/10
+2026-04-26 22:33:41,603 - INFO -   Reward: -24425.70
+2026-04-26 22:33:41,603 - INFO -   Safety: 1.80%
+2026-04-26 22:33:41,603 - INFO -   Violations: 1473
+2026-04-26 22:33:41,603 - INFO -   Production: 94
+2026-04-26 22:33:41,603 - INFO -   Produit: steel
+2026-04-26 22:33:41,603 - INFO -   Actor Loss: -0.0057 | Critic Loss: 80107.1563
+2026-04-26 22:33:41,604 - INFO - --------------------------------------------------
+2026-04-26 22:33:52,336 - INFO - Episode 10/10
+2026-04-26 22:33:52,336 - INFO -   Reward: -25132.40
+2026-04-26 22:33:52,336 - INFO -   Safety: 0.67%
+2026-04-26 22:33:52,337 - INFO -   Violations: 1490
+2026-04-26 22:33:52,337 - INFO -   Production: 100
+2026-04-26 22:33:52,337 - INFO -   Produit: steel
+2026-04-26 22:33:52,337 - INFO -   Actor Loss: -0.0070 | Critic Loss: 75156.2745
+2026-04-26 22:33:52,337 - INFO - --------------------------------------------------
+2026-04-26 22:33:52,338 - INFO - 
+======================================================================
+2026-04-26 22:33:52,338 - INFO - RÉSULTATS FINAUX - MAPPO-Standard
+2026-04-26 22:33:52,338 - INFO - ======================================================================
+2026-04-26 22:33:52,339 - INFO - Reward moyen: -25178.98 ± 4262.26
+2026-04-26 22:33:52,339 - INFO - Taux sécurité moyen: 1.31%
+2026-04-26 22:33:52,339 - INFO - Total violations: 14803
+2026-04-26 22:33:52,339 - INFO - Production totale: 100
+2026-04-26 22:33:52,342 - INFO - ✅ Résultats sauvegardés dans results\livrable3/

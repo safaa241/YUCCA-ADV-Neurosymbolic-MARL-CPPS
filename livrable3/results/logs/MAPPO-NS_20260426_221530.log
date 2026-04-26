@@ -1,0 +1,64 @@
+2026-04-26 22:15:30,452 - INFO - ======================================================================
+2026-04-26 22:15:30,452 - INFO - LIVRABLE 3 - Entraînement MAPPO-NS
+2026-04-26 22:15:30,453 - INFO - Shield neurosymbolique: ACTIF
+2026-04-26 22:15:30,453 - INFO - Tests robustesse: ACTIFS
+2026-04-26 22:15:30,453 - INFO - Contexte dynamique: ACTIF
+2026-04-26 22:15:30,453 - INFO - ======================================================================
+2026-04-26 22:15:30,454 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 22:15:30,454 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 22:15:32,581 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
+2026-04-26 22:15:32,583 - INFO - 🔄 [CONTEXTE] Changement: None → steel
+2026-04-26 22:15:32,583 - INFO -    Température max: 850°C
+2026-04-26 22:15:32,583 - INFO -    Pression max: 10 bar
+2026-04-26 22:15:44,432 - INFO - Episode 5/50
+2026-04-26 22:15:44,432 - INFO -   Reward: -33000.00
+2026-04-26 22:15:44,432 - INFO -   Safety: 0.00%
+2026-04-26 22:15:44,432 - INFO -   Violations: 1500
+2026-04-26 22:15:44,433 - INFO -   Production: 0
+2026-04-26 22:15:44,433 - INFO -   Produit: steel
+2026-04-26 22:15:44,433 - INFO -   Shield corrections: 0
+2026-04-26 22:15:44,433 - INFO -   Actor Loss: -0.0447 | Critic Loss: 128700.7908
+2026-04-26 22:15:44,433 - INFO - --------------------------------------------------
+2026-04-26 22:15:46,519 - WARNING - 🔴 [ROBUSTESSE] NaN sur capteur 0
+2026-04-26 22:15:56,533 - INFO - Episode 10/50
+2026-04-26 22:15:56,533 - INFO -   Reward: -33000.00
+2026-04-26 22:15:56,534 - INFO -   Safety: 0.00%
+2026-04-26 22:15:56,534 - INFO -   Violations: 1500
+2026-04-26 22:15:56,534 - INFO -   Production: 0
+2026-04-26 22:15:56,534 - INFO -   Produit: steel
+2026-04-26 22:15:56,534 - INFO -   Shield corrections: 0
+2026-04-26 22:15:56,534 - INFO -   Actor Loss: -0.0238 | Critic Loss: 124373.4309
+2026-04-26 22:15:56,535 - INFO - --------------------------------------------------
+2026-04-26 22:15:56,535 - INFO - 🔄 [CONTEXTE] Changement: steel → aluminium
+2026-04-26 22:15:56,535 - INFO -    Température max: 650°C
+2026-04-26 22:15:56,535 - INFO -    Pression max: 8 bar
+2026-04-26 22:16:11,427 - INFO - Episode 15/50
+2026-04-26 22:16:11,428 - INFO -   Reward: -33000.00
+2026-04-26 22:16:11,428 - INFO -   Safety: 0.00%
+2026-04-26 22:16:11,429 - INFO -   Violations: 1500
+2026-04-26 22:16:11,429 - INFO -   Production: 0
+2026-04-26 22:16:11,429 - INFO -   Produit: aluminium
+2026-04-26 22:16:11,429 - INFO -   Shield corrections: 0
+2026-04-26 22:16:11,430 - INFO -   Actor Loss: 0.2318 | Critic Loss: 115796.5366
+2026-04-26 22:16:11,430 - INFO - --------------------------------------------------
+2026-04-26 22:16:35,144 - INFO - Episode 20/50
+2026-04-26 22:16:35,145 - INFO -   Reward: -33000.00
+2026-04-26 22:16:35,145 - INFO -   Safety: 0.00%
+2026-04-26 22:16:35,145 - INFO -   Violations: 1500
+2026-04-26 22:16:35,146 - INFO -   Production: 0
+2026-04-26 22:16:35,146 - INFO -   Produit: aluminium
+2026-04-26 22:16:35,146 - INFO -   Shield corrections: 0
+2026-04-26 22:16:35,146 - INFO -   Actor Loss: 67.4618 | Critic Loss: 102356.5362
+2026-04-26 22:16:35,147 - INFO - --------------------------------------------------
+2026-04-26 22:16:35,147 - INFO - 🔄 [CONTEXTE] Changement: aluminium → steel
+2026-04-26 22:16:35,148 - INFO -    Température max: 850°C
+2026-04-26 22:16:35,148 - INFO -    Pression max: 10 bar
+2026-04-26 22:16:57,457 - INFO - Episode 25/50
+2026-04-26 22:16:57,458 - INFO -   Reward: -33000.00
+2026-04-26 22:16:57,458 - INFO -   Safety: 0.00%
+2026-04-26 22:16:57,459 - INFO -   Violations: 1500
+2026-04-26 22:16:57,459 - INFO -   Production: 0
+2026-04-26 22:16:57,459 - INFO -   Produit: steel
+2026-04-26 22:16:57,459 - INFO -   Shield corrections: 0
+2026-04-26 22:16:57,460 - INFO -   Actor Loss: 451.3498 | Critic Loss: 86726.8497
+2026-04-26 22:16:57,460 - INFO - --------------------------------------------------

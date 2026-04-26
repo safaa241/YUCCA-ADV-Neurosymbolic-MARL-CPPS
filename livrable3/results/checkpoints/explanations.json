@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-04-26T23:02:34.547937",
+  "total_explanations": 8817,
+  "total_sensor_errors": 0,
+  "total_conflicts": 0,
+  "explanations": [
+    {
+      "timestamp": "2026-04-26T23:02:30.927188",
+      "agent_id": 0,
+      "state": {
+        "temperature": 

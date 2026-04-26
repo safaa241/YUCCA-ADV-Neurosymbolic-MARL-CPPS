@@ -1,0 +1,18 @@
+2026-04-26 22:33:52,343 - INFO - ======================================================================
+2026-04-26 22:33:52,344 - INFO - LIVRABLE 3 - Entraînement MAPPO-NS
+2026-04-26 22:33:52,344 - INFO - Shield neurosymbolique: ACTIF
+2026-04-26 22:33:52,344 - INFO - Tests robustesse: INACTIFS
+2026-04-26 22:33:52,345 - INFO - Contexte dynamique: ACTIF
+2026-04-26 22:33:52,345 - INFO - ======================================================================
+2026-04-26 22:33:52,346 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 22:33:52,346 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 22:33:52,359 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
+2026-04-26 22:34:13,146 - INFO - Episode 5/10
+2026-04-26 22:34:13,146 - INFO -   Reward: -32339.00
+2026-04-26 22:34:13,147 - INFO -   Safety: 2.07%
+2026-04-26 22:34:13,147 - INFO -   Violations: 1469
+2026-04-26 22:34:13,147 - INFO -   Production: 0
+2026-04-26 22:34:13,147 - INFO -   Produit: steel
+2026-04-26 22:34:13,147 - INFO -   Shield corrections: 0
+2026-04-26 22:34:13,147 - INFO -   Actor Loss: -0.0447 | Critic Loss: 126550.8402
+2026-04-26 22:34:13,147 - INFO - --------------------------------------------------

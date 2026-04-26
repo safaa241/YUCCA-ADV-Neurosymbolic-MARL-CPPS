@@ -1,0 +1,9 @@
+2026-04-26 23:11:45,497 - INFO - ======================================================================
+2026-04-26 23:11:45,497 - INFO - LIVRABLE 3 - Entraînement MAPPO-NS
+2026-04-26 23:11:45,498 - INFO - Shield neurosymbolique: ACTIF
+2026-04-26 23:11:45,498 - INFO - Tests robustesse: INACTIFS
+2026-04-26 23:11:45,498 - INFO - Contexte dynamique: ACTIF
+2026-04-26 23:11:45,499 - INFO - ======================================================================
+2026-04-26 23:11:45,500 - INFO - Environnement créé: 3 agents, 500 steps/épisode
+2026-04-26 23:11:45,501 - INFO - Dimensions: obs_dim=6, action_dim=5
+2026-04-26 23:11:45,506 - INFO - Système MAPPO-NS (Neurosymbolique) initialisé
