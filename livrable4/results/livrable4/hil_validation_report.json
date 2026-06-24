@@ -1,0 +1,173 @@
+{
+  "timestamp": "2026-04-23T11:14:33.887994",
+  "config": {
+    "mode": "hil",
+    "serial_port": "COM3",
+    "baud_rate": 115200,
+    "gpio_pins": {
+      "temp_sensor": 4,
+      "pressure_sensor": 17,
+      "motor_pwm": 18,
+      "led_status": 27,
+      "led_error": 22
+    }
+  },
+  "metrics": {
+    "episode": 3,
+    "total_steps": 100,
+    "mean_temperature_gap": 0.006321409325146998,
+    "std_temperature_gap": 0.008640727793885635,
+    "max_temperature_gap": 0.03636233936518417,
+    "mean_pressure_gap": 0.09917577095823614,
+    "std_pressure_gap": 0.10309216163881203,
+    "max_pressure_gap": 0.591167784778422,
+    "mean_latency_ms": 5.874631404876709,
+    "std_latency_ms": 0.9160570109405595,
+    "hardware_stats": {
+      "total_commands": 900,
+      "total_errors": 21,
+      "mean_latency": 0.012153099372622331,
+      "std_latency": 0.0029295674392208993,
+      "mean_error": 0,
+      "max_error": 0,
+      "is_connected": true,
+      "sensor_values": {
+        "temperature": 20.04156417742162,
+        "pressure": 6.102146769598059,
+        "speed": 0.04072552519926415,
+        "vibration": 0.0,
+        "current": 0.0
+      },
+      "actuator_state": {
+        "motor_pwm": 0,
+        "led_status": false,
+        "led_error": false,
+        "last_command": 0
+      }
+    },
+    "recent_gaps": [
+      {
+        "step": 97,
+        "agent": 2,
+        "temperature_gap": 0.0035071100005611305,
+        "pressure_gap": 0.06894559925878223,
+        "sim_temp": 25.0,
+        "real_temp": 22.01895649952304,
+        "sim_pressure": 5.527634143829346,
+        "real_pressure": 6.217090136417168
+      },
+      {
+        "step": 98,
+        "agent": 0,
+        "temperature_gap": 0.00011588432462910369,
+        "pressure_gap": 0.005523133736112041,
+        "sim_temp": 20.0,
+        "real_temp": 20.098501675934738,
+        "sim_pressure": 6.102146625518799,
+        "real_pressure": 6.157377962879919
+      },
+      {
+        "step": 98,
+        "agent": 1,
+        "temperature_gap": 0.00011588432462910369,
+        "pressure_gap": 0.14073779628799193,
+        "sim_temp": 20.0,
+        "real_temp": 20.098501675934738,
+        "sim_pressure": 4.75,
+        "real_pressure": 6.157377962879919
+      },
+      {
+        "step": 98,
+        "agent": 2,
+        "temperature_gap": 0.007531174498900308,
+        "pressure_gap": 0.06297438190505736,
+        "sim_temp": 26.5,
+        "real_temp": 20.098501675934738,
+        "sim_pressure": 5.527634143829346,
+        "real_pressure": 6.157377962879919
+      },
+      {
+        "step": 99,
+        "agent": 0,
+        "temperature_gap": 0.00023399097719397044,
+        "pressure_gap": 0.003689116138194759,
+        "sim_temp": 20.0,
+        "real_temp": 20.198892330614875,
+        "sim_pressure": 6.102146625518799,
+        "real_pressure": 6.139037786900746
+      },
+      {
+        "step": 99,
+        "agent": 1,
+        "temperature_gap": 0.0003542443169236766,
+        "pressure_gap": 0.0989038168370473,
+        "sim_temp": 20.5,
+        "real_temp": 20.198892330614875,
+        "sim_pressure": 5.149999618530273,
+        "real_pressure": 6.139037786900746
+      },
+      {
+        "step": 99,
+        "agent": 2,
+        "temperature_gap": 0.008589540678510303,
+        "pressure_gap": 0.06114036430714007,
+        "sim_temp": 27.500001907348633,
+        "real_temp": 20.198892330614875,
+        "sim_pressure": 5.527634143829346,
+        "real_pressure": 6.139037786900746
+      },
+      {
+        "step": 100,
+        "agent": 0,
+        "temperature_gap": 0.00045416017512939157,
+        "pressure_gap": 0.01937491210977278,
+        "sim_temp": 20.0,
+        "real_temp": 20.386036148859983,
+        "sim_pressure": 6.102146625518799,
+        "real_pressure": 6.295895746616527
+      },
+      {
+        "step": 100,
+        "agent": 1,
+        "temperature_gap": 0.00045416017512939157,
+        "pressure_gap": 0.13458959373513898,
+        "sim_temp": 20.0,
+        "real_temp": 20.386036148859983,
+        "sim_pressure": 4.949999809265137,
+        "real_pressure": 6.295895746616527
+      },
+      {
+        "step": 100,
+        "agent": 2,
+        "temperature_gap": 0.008957604530752962,
+        "pressure_gap": 0.0768261602787181,
+        "sim_temp": 28.0,
+        "real_temp": 20.386036148859983,
+        "sim_pressure": 5.527634143829346,
+        "real_pressure": 6.295895746616527
+      }
+    ]
+  },
+  "hardware_logs": {
+    "total_commands": 900,
+    "total_errors": 21,
+    "mean_latency": 0.012153099372622331,
+    "std_latency": 0.0029295674392208993,
+    "mean_error": 0,
+    "max_error": 0,
+    "is_connected": true,
+    "sensor_values": {
+      "temperature": 20.04156417742162,
+      "pressure": 6.102146769598059,
+      "speed": 0.04072552519926415,
+      "vibration": 0.0,
+      "current": 0.0
+    },
+    "actuator_state": {
+      "motor_pwm": 0,
+      "led_status": false,
+      "led_error": false,
+      "last_command": 0
+    }
+  }
+}

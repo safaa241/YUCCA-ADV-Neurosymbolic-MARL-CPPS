@@ -1,0 +1,450 @@
+{
+  "timestamp": "2026-05-12T22:16:19.045518",
+  "total_explanations": 74,
+  "explanations": [
+    {
+      "timestamp": "2026-05-12T22:16:18.916429",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.919338",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.925354",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.929399",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=22\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.941548",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.943632",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.945610",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.947591",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.948656",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.949672",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.950739",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.951749",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.952734",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.955990",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.957450",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.960011",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.961782",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.963761",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.964841",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.965864",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.966895",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.967891",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.969254",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.971841",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.973416",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.974531",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.975702",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.977624",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.978679",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.979677",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.980706",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.981656",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.982695",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.983710",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.984744",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.985779",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.987187",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.990111",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.991356",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.992399",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.993475",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.994697",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.995742",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.996787",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.997805",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.998818",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:18.999824",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.001329",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.002384",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.003544",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.005919",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.007443",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.009502",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.011405",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.012376",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.013878",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.014921",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.015858",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.016883",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.017960",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.019006",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.020420",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.022610",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.023824",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.025055",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.027315",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.028402",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.029455",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.030628",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.031729",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.032879",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.033928",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.034959",
+      "agent_id": 0,
+      "safe_action": 2,
+      "explanation": "R6: Arr\u00eat inutile (v=0, T=20\u00b0C) \u2192 reprise production"
+    },
+    {
+      "timestamp": "2026-05-12T22:16:19.036118",
+      "agent_id": 0,
+      "safe_action": 4,
+      "explanation": "R5: Maintenance requise \u2192 STOP"
+    }
+  ]
+}

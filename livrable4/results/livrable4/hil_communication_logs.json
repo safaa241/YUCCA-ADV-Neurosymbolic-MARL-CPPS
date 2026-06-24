@@ -1,0 +1,532 @@
+{
+  "timestamp": "2026-04-23T11:14:33.890293",
+  "config": {
+    "mode": "hil",
+    "serial_port": "COM3",
+    "baud_rate": 115200
+  },
+  "statistics": {
+    "total_commands": 900,
+    "total_errors": 21,
+    "mean_latency": 0.012153099372622331,
+    "std_latency": 0.0029295674392208993,
+    "mean_error": 0,
+    "max_error": 0,
+    "is_connected": true,
+    "sensor_values": {
+      "temperature": 20.04156417742162,
+      "pressure": 6.102146769598059,
+      "speed": 0.04072552519926415,
+      "vibration": 0.0,
+      "current": 0.0
+    },
+    "actuator_state": {
+      "motor_pwm": 0,
+      "led_status": false,
+      "led_error": false,
+      "last_command": 0
+    }
+  },
+  "logs": [
+    {
+      "timestamp": "2026-04-23T11:14:33.617669",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.619556",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.623522",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.625869",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.627046",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.629872",
+      "type": "ERROR",
+      "message": "[HIL_SIM] Perte de paquet sur capteur current"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.631483",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.633110",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.634874",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.636814",
+      "type": "ERROR",
+      "message": "[HIL_SIM] Perte de paquet sur capteur vibration"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.638292",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.641034",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.643512",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.648843",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.650107",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.651825",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.656477",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.657705",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.659046",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.666166",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.668403",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.670154",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.674076",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.675718",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.676990",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.681727",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.682986",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.684736",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.688845",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.690057",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.691835",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.696012",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.697692",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.699945",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.703488",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.705182",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.706929",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.711108",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.712871",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.715114",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.719136",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.721340",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.723624",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.726784",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.728528",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.730175",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.734378",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.735610",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.737342",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.741239",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.743531",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.745649",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.751096",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.752639",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.754850",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.758741",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.760392",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.761524",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.766784",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.769113",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.771255",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.775313",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.777006",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.779219",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.783856",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.785938",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.788157",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.792225",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.794675",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.796578",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.800795",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.802505",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.804263",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.808423",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.810406",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.811620",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.816630",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.818414",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.820652",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.824234",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.826515",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.828707",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.833145",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.834691",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.836420",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.840253",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.843207",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.845016",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.851302",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.853832",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.856035",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=128"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.859906",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.861150",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.862854",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.868289",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.869956",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=255"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.871700",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.876698",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.878414",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    },
+    {
+      "timestamp": "2026-04-23T11:14:33.880102",
+      "type": "COMMAND",
+      "message": "[HIL_SIM] Commande envoyée - motor=0"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+2026-05-12 22:16:16,658 - INFO - ======================================================================
+2026-05-12 22:16:16,658 - INFO - PHASE 1: Simulation pure (baseline)
+2026-05-12 22:16:16,659 - INFO - ======================================================================
+2026-05-12 22:16:17,734 - INFO - Modèle sauvegardé: phase1_simulation
+2026-05-12 22:16:17,735 - INFO - ======================================================================
+2026-05-12 22:16:17,735 - INFO - PHASE 2: Domain Randomization
+2026-05-12 22:16:17,736 - INFO - ======================================================================
+2026-05-12 22:16:18,029 - INFO - Modèle sauvegardé: phase2_domain_rand
+2026-05-12 22:16:18,030 - INFO - ======================================================================
+2026-05-12 22:16:18,030 - INFO - PHASE 3: Hardware-in-the-Loop (HIL)
+2026-05-12 22:16:18,030 - INFO - ======================================================================
+2026-05-12 22:16:18,102 - INFO - Modèle chargé: phase2_domain_rand
+2026-05-12 22:16:18,540 - WARNING - Anomalie détectée à l'épisode 0, step 60: [{'key': 'temperature', 'error': np.float32(0.09580231), 'threshold': np.float32(0.07142858), 'predicted': np.float32(20.156467), 'actual': np.float32(20.25227)}]
+2026-05-12 22:16:18,628 - WARNING - Anomalie détectée à l'épisode 0, step 70: [{'key': 'temperature', 'error': np.float32(0.30026436), 'threshold': np.float32(0.066849336), 'predicted': np.float32(19.98242), 'actual': np.float32(20.282684)}]
+2026-05-12 22:16:18,701 - WARNING - Anomalie détectée à l'épisode 0, step 80: [{'key': 'temperature', 'error': np.float32(0.2541752), 'threshold': np.float32(0.069520414), 'predicted': np.float32(20.076668), 'actual': np.float32(20.330843)}, {'key': 'speed', 'error': np.float32(0.5), 'threshold': np.float32(0.069520414), 'predicted': np.float32(0.0), 'actual': np.float32(0.5)}]
+2026-05-12 22:16:18,837 - INFO - Modèle sauvegardé: phase3_hil
+2026-05-12 22:16:18,838 - INFO - ======================================================================
+2026-05-12 22:16:18,838 - INFO - PHASE 4: Déploiement réel
+2026-05-12 22:16:18,839 - INFO - ======================================================================
+2026-05-12 22:16:18,906 - INFO - Modèle chargé: phase3_hil
+2026-05-12 22:16:18,909 - WARNING - Anomalie détectée à l'épisode 0, step 0: [{'key': 'temperature', 'error': np.float32(0.5), 'threshold': np.float32(0.06791759), 'predicted': np.float32(48.022797), 'actual': np.float32(48.522797)}, {'key': 'speed', 'error': np.float32(0.5), 'threshold': np.float32(0.06791759), 'predicted': np.float32(0.0), 'actual': np.float32(0.5)}]
+2026-05-12 22:16:18,919 - WARNING - Anomalie détectée à l'épisode 0, step 10: [{'key': 'temperature', 'error': np.float32(0.9999962), 'threshold': np.float32(0.06504988), 'predicted': np.float32(44.022797), 'actual': np.float32(43.0228)}]
+2026-05-12 22:16:18,932 - WARNING - Anomalie détectée à l'épisode 0, step 20: [{'key': 'temperature', 'error': np.float32(1.0), 'threshold': np.float32(0.06251745), 'predicted': np.float32(37.022797), 'actual': np.float32(36.022797)}]
+2026-05-12 22:16:18,946 - WARNING - Anomalie détectée à l'épisode 0, step 30: [{'key': 'temperature', 'error': np.float32(0.9999981), 'threshold': np.float32(0.0602597), 'predicted': np.float32(30.022797), 'actual': np.float32(29.022799)}]
+2026-05-12 22:16:18,962 - WARNING - Anomalie détectée à l'épisode 0, step 40: [{'key': 'temperature', 'error': np.float32(1.0), 'threshold': np.float32(0.058230326), 'predicted': np.float32(23.022799), 'actual': np.float32(22.022799)}]
+2026-05-12 22:16:18,976 - WARNING - Anomalie détectée à l'épisode 0, step 50: [{'key': 'temperature', 'error': np.float32(0.5), 'threshold': np.float32(0.06048072), 'predicted': np.float32(20.5), 'actual': np.float32(20.0)}, {'key': 'speed', 'error': np.float32(0.5), 'threshold': np.float32(0.06048072), 'predicted': np.float32(0.5), 'actual': np.float32(0.0)}]
+2026-05-12 22:16:18,988 - WARNING - Anomalie détectée à l'épisode 0, step 60: [{'key': 'temperature', 'error': np.float32(0.5), 'threshold': np.float32(0.062247805), 'predicted': np.float32(20.5), 'actual': np.float32(20.0)}, {'key': 'speed', 'error': np.float32(0.5), 'threshold': np.float32(0.062247805), 'predicted': np.float32(0.5), 'actual': np.float32(0.0)}]
+2026-05-12 22:16:19,025 - WARNING - Anomalie détectée à l'épisode 0, step 90: [{'key': 'temperature', 'error': np.float32(0.5), 'threshold': np.float32(0.060418177), 'predicted': np.float32(20.5), 'actual': np.float32(20.0)}, {'key': 'speed', 'error': np.float32(0.5), 'threshold': np.float32(0.060418177), 'predicted': np.float32(0.5), 'actual': np.float32(0.0)}]
+2026-05-12 22:16:19,046 - INFO - Modèle sauvegardé: phase4_real
